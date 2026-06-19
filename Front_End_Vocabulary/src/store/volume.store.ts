@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface VolumeState {
-  /** Volume level 0-150 */
+  /** Volume level 0-100 (cap at 100 to avoid audio distortion) */
   volume: number;
   /** Volume before mute (for restore) */
   prevVolume: number;
@@ -19,7 +19,7 @@ export const useVolumeStore = create<VolumeState>((set, get) => ({
   _hydrated: false,
 
   setVolume: (v: number) => {
-    const clamped = Math.max(0, Math.min(150, v));
+    const clamped = Math.max(0, Math.min(100, v));
     set({ volume: clamped, prevVolume: clamped > 0 ? clamped : get().prevVolume, _hydrated: true });
     try {
       localStorage.setItem("parroto_volume", String(clamped));

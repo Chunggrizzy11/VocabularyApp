@@ -8,7 +8,7 @@ export default function VolumeSlider() {
   const toggleMute = useVolumeStore((s) => s.toggleMute);
 
   const isMuted = volume === 0;
-  const volumeIcon: IconName = isMuted ? "volume-mute" : volume <= 50 ? "volume-low" : volume <= 100 ? "volume-high" : "volume-max";
+  const volumeIcon: IconName = isMuted ? "volume-mute" : volume <= 50 ? "volume-low" : "volume-high";
 
   const fillColor = isMuted ? "var(--danger)" : "var(--brand)";
 
@@ -36,7 +36,7 @@ export default function VolumeSlider() {
         <input
           type="range"
           min={0}
-          max={150}
+          max={100}
           value={volume}
           onChange={(e) => setVolume(parseInt(e.target.value, 10))}
           aria-label={`Volume: ${volume}%`}
@@ -46,7 +46,7 @@ export default function VolumeSlider() {
             height: "8px",
             WebkitAppearance: "none",
             appearance: "none",
-            background: `linear-gradient(to right, ${fillColor} 0%, ${fillColor} ${(volume / 150) * 100}%, var(--neutral-tertiary-medium) ${(volume / 150) * 100}%, var(--neutral-tertiary-medium) 100%)`,
+            background: `linear-gradient(to right, ${fillColor} 0%, ${fillColor} ${volume}%, var(--neutral-tertiary-medium) ${volume}%, var(--neutral-tertiary-medium) 100%)`,
             borderRadius: "4px",
             outline: "none",
             cursor: "pointer",
@@ -59,7 +59,7 @@ export default function VolumeSlider() {
         className="shrink-0 tabular-nums font-bold"
         style={{
           fontSize: "12px",
-          color: volume > 100 ? "#FF9600" : "var(--text-body-subtle)",
+          color: "var(--text-body-subtle)",
           width: "32px",
           textAlign: "right",
         }}
