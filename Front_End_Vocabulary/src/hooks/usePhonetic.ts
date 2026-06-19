@@ -14,96 +14,43 @@ interface DictionaryEntry {
   word: string;
   phonetic?: string;
   phonetics?: PhoneticEntry[];
-  meanings?: { partOfSpeech: string; definitions: { definition: string }[] }[];
+}
+
+/** Detect DIY phonetics like /good-bī/, /CHik-in/ — NOT real IPA */
+const DIY_RE = /^\/?[a-zA-Z].*[a-zA-Z].*\/?$/;
+
+/**
+ * Returns true if the string contains IPA-specific characters
+ * that mark it as a real IPA transcription (not DIY spelling).
+ */
+function hasIpaChars(s: string): boolean {
+  return /[ˈˌːəɛæɑɔθðŋʃʒɡ]/.test(s);
 }
 
 /**
- * Standard IPA phonological symbols used in Cambridge & Oxford dictionaries.
- */
-const IPA_RE = /^\/?[ˈˌːəɛæɑɔθðŋʃʒɡđħʔiʊuɛɑeiouʌaɪaʊɔɪəɜ]+/;
-
-/**
- * Add syllable dots (·) to IPA notation in Cambridge-style format.
- *
- * Cambridge format: ˈjuː.nɪ.fɔːm  (with dots between syllables)
- * API returns:      ˈjuːnɪfɔːm    (no dots)
- *
- * Syllable boundary rules in English IPA:
- * - Between two consonants that form separate syllables
- * - Before a stressed syllable
- * - After /ˈ/ stress marks, before the vowel
- */
-function addSyllableDots(ipa: string): string {
-  // Don't add dots if they already exist
-  if (ipa.includes(".")) return ipa;
-
-  // Remove slashes temporarily for processing
-  const hasSlashes = ipa.startsWith("/") && ipa.endsWith("/");
-  let inner = hasSlashes ? ipa.slice(1, -1).trim() : ipa.trim();
-  if (!inner) return ipa;
-
-  // Insert dots between consonant clusters where there's no vowel in between
-  // Vowel set for IPA: iː, ɪ, e, æ, ɑː, ɒ, ɔː, uː, ʊ, ʌ, ɜː, ə, aɪ, aʊ, ɔɪ, eɪ, oʊ, ɪə, eə, ʊə
-  // Strategy: add dot after each vowel+syllable boundary
-
-  const result: string[] = [];
-  let i = 0;
-  const chars = [...inner];
-
-  while (i < chars.length) {
-    result.push(chars[i]);
-
-    // Check if current char is a vowel that could end a syllable
-    const c = chars[i];
-    const next = i + 1 < chars.length ? chars[i + 1] : null;
-
-    // Vowel characters in IPA
-    const isVowel = /[iɪeɛæɑɒɔuʊʌəɜaoe]/.test(c);
-    const isStress = c === "ˈ" || c === "ˌ";
-
-    // If next char is a stress marker, that's a syllable boundary
-    if (next && isStress) {
-      result.push(".");
-    }
-    // If current is a long vowel (ː) or diphthong and followed by consonant, likely boundary
-    else if (isVowel && next && /[θðʃʒŋɡmnlrvwjθðfkspbt]/.test(next)) {
-      // Check if the consonant is followed by another consonant or stress
-      const nextNext = i + 2 < chars.length ? chars[i + 2] : null;
-      if (nextNext && (/[ˈˌ]/.test(nextNext) || /[θðʃʒŋɡmnlrvwjθðfkspbt]/.test(nextNext))) {
-        result.push(".");
-      }
-    }
-
-    i++;
-  }
-
-  const joined = result.join("");
-  return hasSlashes ? `/${joined}/` : joined;
-}
-
-/**
- * Normalize a phonetic string to standard IPA format (Cambridge-style).
+ * Clean and normalize IPA from the Free Dictionary API.
+ * Returns null if it's not real IPA.
  */
 function normalizeIPA(phonetic: string): string | null {
   if (!phonetic) return null;
 
   let cleaned = phonetic.trim();
+  // Remove surrounding slashes
+  cleaned = cleaned.replace(/^\/|\/$/g, "").trim();
+  if (!cleaned) return null;
 
-  // Remove surrounding slashes if present
-  cleaned = cleaned.replace(/^\/|\/$/g, "");
+  // Reject if it looks like DIY phonetic spelling
+  if (DIY_RE.test(cleaned) && !hasIpaChars(cleaned)) return null;
 
-  // Check if it looks like proper IPA (has standard IPA characters)
-  if (IPA_RE.test(cleaned)) {
-    // Add syllable dots in Cambridge style
-    return addSyllableDots(`/${cleaned}/`);
-  }
+  // Must have at least one IPA-specific char
+  if (!hasIpaChars(cleaned)) return null;
 
-  return null;
+  return `/${cleaned}/`;
 }
 
 /**
- * Hook to fetch standard IPA phonetic transcription (Cambridge/Oxford format).
- * Caches results so repeated lookups are instant.
+ * Fetch standard IPA from Free Dictionary API (Cambridge/Wiktionary source).
+ * Caches results for instant repeat lookups.
  */
 export function usePhonetic() {
   const fetching = useRef(false);
@@ -127,21 +74,19 @@ export function usePhonetic() {
       const entry = data[0];
       if (!entry) return null;
 
-      // Try each phonetics entry in order — prefer one with audio (Cambridge-sourced)
-      let bestPhonetic = entry.phonetics?.find((p) => p.audio && p.text)?.text;
-      if (!bestPhonetic) bestPhonetic = entry.phonetics?.find((p) => p.text)?.text;
-      if (!bestPhonetic) bestPhonetic = entry.phonetic;
-      if (!bestPhonetic) return null;
+      // Prefer entry with audio (usually Cambridge-source)
+      let best = entry.phonetics?.find((p) => p.audio && p.text)?.text;
+      if (!best) best = entry.phonetics?.find((p) => p.text)?.text;
+      if (!best) best = entry.phonetic;
+      if (!best) return null;
 
-      // Handle multiple variants (US/UK)
-      let final = bestPhonetic;
-      if (final.includes(";")) {
-        const parts = final.split(";").map((p) => p.trim());
-        // Usually format: "/uk/; /us/" — last one is often US
-        final = parts[parts.length - 1];
+      // Handle "UK: /xx/; US: /yy/" — pick the last variant (usually US)
+      if (best.includes(";")) {
+        const parts = best.split(";").map((s) => s.trim());
+        best = parts[parts.length - 1];
       }
 
-      const normalized = normalizeIPA(final);
+      const normalized = normalizeIPA(best);
       if (normalized) {
         cache.set(lower, normalized);
         return normalized;
