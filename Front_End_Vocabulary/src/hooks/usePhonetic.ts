@@ -74,8 +74,10 @@ export function usePhonetic() {
       const entry = data[0];
       if (!entry) return null;
 
-      // Prefer entry with audio (usually Cambridge-source)
-      let best = entry.phonetics?.find((p) => p.audio && p.text)?.text;
+      // Prefer UK IPA (has ː marks, more standard).
+      // The API puts UK first (no audio or with UK audio), US second.
+      // US entries use /ɚ/ (rhotic) and lack ː marks — less standard.
+      let best = entry.phonetics?.find((p) => p.text && hasIpaChars(p.text))?.text;
       if (!best) best = entry.phonetics?.find((p) => p.text)?.text;
       if (!best) best = entry.phonetic;
       if (!best) return null;
