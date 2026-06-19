@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx vite *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Read(//c/Users/Predator/Desktop/DBVocabularyApp/**)",
+      "Bash(npx --package typescript tsc --noEmit)",
+      "Read(//d//**)",
+      "Read(//mnt/**)",
+      "Bash(python /d/antigravity-skills/ui-ux-pro-max/scripts/search.py \"education vocabulary learning app modern clean minimal\" --design-system -p \"KMate Vocabulary\")",
+      "Bash(python /d/antigravity-skills/ui-ux-pro-max/scripts/search.py \"layout responsive mobile navigation\" --stack react)",
+      "PowerShell(New-Item -ItemType Directory -Path \"e:\\\\VocabularyApp\\\\Back_End_Vocabulary\\\\src\\\\data\" -Force)",
+      "WebFetch(domain:github.com)",
+      "Bash(git clone *)",
+      "Bash(mkdir -p /d/antigravity-skills/frontend-design)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/anthropics/skills/main/skills/frontend-design/SKILL.md\" -o \"/d/antigravity-skills/frontend-design/SKILL.md\")",
+      "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"education vocabulary learning app modern clean\" --design-system -p \"KMate Parroto Vocabulary\")",
+      "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"education vocabulary app clean modern readable light mode\" --design-system -p \"KMate Vocabulary\")",
+      "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"color contrast accessible light mode readability\" --domain ux)"
+    ],
+    "additionalDirectories": [
+      "D:\\antigravity-skills"
+    ]
+  }
+}
