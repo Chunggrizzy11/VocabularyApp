@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Phonetic from "../common/Phonetic";
 
 interface Props {
   word: string;
@@ -54,11 +55,9 @@ export default function Flashcard({ word, meaning, phonetic }: Props) {
           >
             {word}
           </h2>
-          {phonetic && (
-            <p className="text-sm mt-2" style={{ color: "var(--text-body-subtle)" }}>
-              {phonetic}
-            </p>
-          )}
+          <p className="text-sm mt-2" style={{ color: "var(--text-body-subtle)" }}>
+            <Phonetic word={word} fallback={phonetic} />
+          </p>
           <p className="text-xs font-bold mt-8 uppercase tracking-wide" style={{ color: "var(--text-body-subtle)" }}>
             Tap to reveal meaning
           </p>

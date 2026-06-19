@@ -5,6 +5,7 @@ import PronunciationButton from "../../components/common/PronunciationButton";
 import Loading from "../../components/common/Loading";
 import EmptyState from "../../components/common/EmptyState";
 import Icon from "../../components/common/Icon";
+import Phonetic from "../../components/common/Phonetic";
 import { useGenerationStore } from "../../store/generation.store";
 
 export default function WordGeneratorPage() {
@@ -103,7 +104,7 @@ export default function WordGeneratorPage() {
                   <div>
                     <div className="flex items-center gap-3">
                       <h2 className="text-xl font-bold" style={{ color: "var(--text-heading)" }}>{w.word}</h2>
-                      {w.phonetic && <span className="text-sm" style={{ color: "var(--text-body-subtle)" }}>{w.phonetic}</span>}
+                      {w.phonetic && <span className="text-sm" style={{ color: "var(--text-body-subtle)" }}><Phonetic word={w.word} fallback={w.phonetic} /></span>}
                     </div>
                     <span className="badge mt-1">{w.partOfSpeech}</span>
                   </div>

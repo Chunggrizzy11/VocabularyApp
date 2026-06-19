@@ -1,5 +1,6 @@
 import type { VocabularyWord } from "../../types/Vocabulary";
 import PronunciationButton from "../common/PronunciationButton";
+import Phonetic from "../common/Phonetic";
 
 interface Props {
   word: VocabularyWord;
@@ -34,11 +35,7 @@ export default function VocabularyCard({ word, onClick }: Props) {
           {word.difficulty}
         </span>
       </div>
-      {word.phonetic && (
-        <p className="text-sm mt-2" style={{ color: "var(--text-light)" }}>
-          {word.phonetic}
-        </p>
-      )}
+      <Phonetic word={word.word} fallback={word.phonetic} />
     </div>
   );
 }

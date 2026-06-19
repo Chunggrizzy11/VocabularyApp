@@ -4,6 +4,7 @@ import { useVocabulary } from "../../hooks/useVocabulary";
 import Loading from "../../components/common/Loading";
 import EmptyState from "../../components/common/EmptyState";
 import PronunciationButton from "../../components/common/PronunciationButton";
+import Phonetic from "../../components/common/Phonetic";
 
 export default function TopicDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -29,7 +30,7 @@ export default function TopicDetailPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3">
                       <h2 className="text-lg font-bold truncate" style={{ color: "var(--text-heading)" }}>{w.word}</h2>
-                      <span className="text-sm font-medium shrink-0" style={{ color: "var(--text-body-subtle)" }}>{w.phonetic}</span>
+                      <span className="text-sm font-medium shrink-0" style={{ color: "var(--text-body-subtle)" }}><Phonetic word={w.word} fallback={w.phonetic} /></span>
                       <PronunciationButton word={w.word} size="sm" />
                     </div>
                     <span className="badge mt-1">{w.partOfSpeech}</span>
