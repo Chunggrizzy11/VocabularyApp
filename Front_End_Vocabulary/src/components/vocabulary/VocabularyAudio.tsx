@@ -2,11 +2,11 @@ import { useState, useRef } from "react";
 import Icon from "../common/Icon";
 
 interface Props {
-  word: string;
+  word?: string;
   audioUrl?: string;
 }
 
-export default function VocabularyAudio({ word, audioUrl }: Props) {
+export default function VocabularyAudio({ audioUrl }: Props) {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 

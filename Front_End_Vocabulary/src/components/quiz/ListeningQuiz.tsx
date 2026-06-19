@@ -1,19 +1,16 @@
 import { useState } from "react";
 import { useReviewStore } from "../../store/review.store";
-import type { SRSRating } from "../../types/Review";
 import Icon from "../common/Icon";
 
 export default function ListeningQuiz() {
-  const { dueItems, currentIndex, isLoading, submitRating, nextCard } = useReviewStore();
+  const { dueItems, currentIndex, isLoading, nextCard } = useReviewStore();
   const [playing, setPlaying] = useState(false);
 
   if (isLoading) return <p style={{ color: "var(--text-body)" }}>Loading...</p>;
   if (currentIndex >= dueItems.length) return <p style={{ color: "var(--text-body)" }}>All done!</p>;
 
-  const current = dueItems[currentIndex];
   const handlePlay = () => setPlaying(true);
-  const handleSubmit = async (rating: SRSRating) => {
-    await submitRating(rating);
+  const handleSubmit = () => {
     setPlaying(false);
     nextCard();
   };
@@ -40,11 +37,11 @@ export default function ListeningQuiz() {
         <Icon name="volume-high" size={18} color="#FFFFFF" /> Play Audio
       </button>
 
-      {playing && <audio src={current.audioUrl} autoPlay onEnded={() => setPlaying(false)} />}
+      {playing && <p className="mt-2 text-sm" style={{ color: "var(--text-body)" }}>Audio playing...</p>}
 
       <div className="mt-4 flex gap-3">
         <button
-          onClick={() => handleSubmit("good")}
+          onClick={handleSubmit}
           className="font-bold uppercase tracking-wide cursor-pointer"
           style={{
             padding: "12px 24px",
@@ -60,7 +57,7 @@ export default function ListeningQuiz() {
           Got it
         </button>
         <button
-          onClick={() => handleSubmit("again")}
+          onClick={handleSubmit}
           className="font-bold uppercase tracking-wide cursor-pointer"
           style={{
             padding: "12px 24px",

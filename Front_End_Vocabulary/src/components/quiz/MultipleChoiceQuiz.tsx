@@ -1,24 +1,14 @@
 import { useState, useEffect } from "react";
 import { useReviewStore } from "../../store/review.store";
-import type { SRSRating } from "../../types/Review";
 
 export default function MultipleChoiceQuiz() {
-  const {
-    dueItems,
-    currentIndex,
-    submitRating,
-    nextCard,
-    isLoading,
-  } = useReviewStore();
-
+  const { dueItems, currentIndex, nextCard, isLoading } = useReviewStore();
   const [selected, setSelected] = useState<string>("");
 
-  useEffect(() => {
-    setSelected("");
-  }, [currentIndex]);
+  useEffect(() => { setSelected(""); }, [currentIndex]);
 
-  if (isLoading) return <p style={{ color: "var(--text-muted)" }}>Loading...</p>;
-  if (currentIndex >= dueItems.length) return <p style={{ color: "var(--text-muted)" }}>All done!</p>;
+  if (isLoading) return <p style={{ color: "var(--text-body)" }}>Loading...</p>;
+  if (currentIndex >= dueItems.length) return <p style={{ color: "var(--text-body)" }}>All done!</p>;
 
   const current = dueItems[currentIndex];
   const choices = [current.meaning];
@@ -28,25 +18,22 @@ export default function MultipleChoiceQuiz() {
   }
   const shuffled = choices.sort(() => Math.random() - 0.5);
 
-  const handleSubmit = async () => {
-    const rating: SRSRating = selected ? "good" : "again";
-    await submitRating(rating);
-    nextCard();
-  };
+  const handleSubmit = () => { nextCard(); };
 
   return (
-    <div className="card p-6" style={{ boxShadow: "var(--shadow)" }}>
-      <h2 className="text-xl font-bold mb-4" style={{ color: "var(--text)" }}>
+    <div className="card p-6">
+      <h2 className="text-xl font-bold mb-4" style={{ color: "var(--text-heading)" }}>
         {current.word}
       </h2>
       <div className="space-y-2 mb-4">
         {shuffled.map((opt) => (
           <label
             key={opt}
-            className="flex items-center gap-3 p-3 rounded-[5px] cursor-pointer transition-all"
+            className="flex items-center gap-3 p-3 cursor-pointer transition-all"
             style={{
-              backgroundColor: selected === opt ? "#e0e7ff" : "var(--surface-muted)",
-              border: selected === opt ? "1.5px solid var(--primary)" : "1.5px solid transparent",
+              backgroundColor: selected === opt ? "var(--brand-softer)" : "var(--neutral-secondary-medium)",
+              border: selected === opt ? "2px solid var(--border-brand-subtle)" : "2px solid transparent",
+              borderRadius: "var(--radius-default)",
             }}
           >
             <input
@@ -54,9 +41,9 @@ export default function MultipleChoiceQuiz() {
               value={opt}
               checked={selected === opt}
               onChange={(e) => setSelected(e.target.value)}
-              className="w-4 h-4 accent-[var(--primary)]"
+              className="w-4 h-4 accent-[var(--brand)]"
             />
-            <span className="text-sm font-medium" style={{ color: "var(--text)" }}>
+            <span className="text-sm font-bold" style={{ color: "var(--text-heading)" }}>
               {opt}
             </span>
           </label>
@@ -64,15 +51,14 @@ export default function MultipleChoiceQuiz() {
       </div>
       <button
         onClick={handleSubmit}
+        className="font-bold uppercase tracking-wide"
         style={{
-          padding: "10px 24px",
-          backgroundColor: "var(--primary)",
-          color: "var(--text-inverse)",
-          borderRadius: "var(--radius-xs)",
-          boxShadow: "var(--shadow-sm)",
+          padding: "12px 24px",
+          backgroundColor: "var(--brand)",
+          color: "#FFFFFF",
+          borderRadius: "var(--radius-default)",
           border: "none",
-          fontWeight: "var(--font-weight-semibold)",
-          fontSize: "var(--font-size-md)",
+          cursor: "pointer",
         }}
       >
         Submit

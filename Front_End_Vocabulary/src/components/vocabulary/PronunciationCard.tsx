@@ -1,20 +1,22 @@
 interface Props {
-  word: string;
-  pronunciation: string;
+  word?: string;
+  pronunciation?: string;
 }
 
-export default function PronunciationCard({ word, pronunciation }: Props) {
+export default function PronunciationCard({ pronunciation }: Props) {
   return (
     <div
       className="mt-3 p-3"
       style={{
-        backgroundColor: "var(--surface-muted)",
-        borderRadius: "var(--radius-xs)",
+        backgroundColor: "var(--neutral-secondary-medium)",
+        borderRadius: "var(--radius-default)",
       }}
     >
-      <p className="text-sm font-medium" style={{ color: "var(--text-muted)" }}>
-        {pronunciation}
-      </p>
+      {pronunciation && (
+        <p className="text-sm font-bold" style={{ color: "var(--text-heading)" }}>
+          {pronunciation}
+        </p>
+      )}
     </div>
   );
 }

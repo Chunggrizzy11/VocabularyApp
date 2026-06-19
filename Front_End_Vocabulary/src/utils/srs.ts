@@ -1,6 +1,13 @@
-import type { SRSRating, SRSLevel } from "../types/Review";
+import type { SRSRating } from "../types/Review";
 
-export const SRS_LEVELS: SRSLevel[] = [
+interface SRSLevelDef {
+  level: number;
+  name: string;
+  intervalDays: number;
+  multiplier: number;
+}
+
+export const SRS_LEVELS: SRSLevelDef[] = [
   { level: 0, name: "New", intervalDays: 0, multiplier: 0 },
   { level: 1, name: "Again", intervalDays: 1, multiplier: 1 },
   { level: 2, name: "Hard", intervalDays: 3, multiplier: 1.2 },

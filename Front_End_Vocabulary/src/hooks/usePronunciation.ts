@@ -70,7 +70,8 @@ export function usePronunciation() {
       if (gainValue === 0) return;
 
       // Get audio URL
-      let audioUrl = urlCache.get(lower);
+      const cachedUrl = urlCache.get(lower);
+      let audioUrl = cachedUrl || null;
       if (!audioUrl) {
         audioUrl = await fetchAudioUrl(lower);
         if (!audioUrl) return; // failed
