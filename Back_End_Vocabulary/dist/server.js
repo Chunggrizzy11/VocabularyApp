@@ -12,6 +12,8 @@ const vocabulary_routes_1 = __importDefault(require("./routes/vocabulary.routes"
 const review_routes_1 = __importDefault(require("./routes/review.routes"));
 const quiz_routes_1 = __importDefault(require("./routes/quiz.routes"));
 const statistics_routes_1 = __importDefault(require("./routes/statistics.routes"));
+const generation_routes_1 = __importDefault(require("./routes/generation.routes"));
+const seed_routes_1 = __importDefault(require("./routes/seed.routes"));
 const errorHandler_1 = require("./middlewares/errorHandler");
 const notFound_1 = require("./middlewares/notFound");
 const app = (0, express_1.default)();
@@ -25,6 +27,8 @@ app.use("/api/vocabulary", vocabulary_routes_1.default);
 app.use("/api/review", review_routes_1.default);
 app.use("/api/quiz", quiz_routes_1.default);
 app.use("/api/statistics", statistics_routes_1.default);
+app.use("/api/generation", generation_routes_1.default);
+app.use("/api/seed", seed_routes_1.default);
 app.use(notFound_1.notFound);
 app.use(errorHandler_1.errorHandler);
 async function start() {

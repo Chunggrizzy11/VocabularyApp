@@ -3,7 +3,7 @@ export declare const reviewService: {
     getDueItems: () => Promise<{
         vocabularyId: string;
         word: string;
-        phonetic: string;
+        phonetic: string | undefined;
         meaning: string;
         example: string;
         partOfSpeech: string;

@@ -8,7 +8,7 @@ router.get("/", vocabulary_controller_1.vocabularyController.getAll);
 router.get("/search", vocabulary_controller_1.vocabularyController.search);
 router.get("/due-review", vocabulary_controller_1.vocabularyController.getDueForReview);
 router.get("/:id", vocabulary_controller_1.vocabularyController.getById);
-router.post("/", (0, validateRequest_1.validateRequest)(["topicId", "word", "meaning", "pronunciation"]), vocabulary_controller_1.vocabularyController.create);
+router.post("/", (0, validateRequest_1.validateRequest)(["topicId", "word", "meaning", "phonetic"]), vocabulary_controller_1.vocabularyController.create);
 router.put("/:id", vocabulary_controller_1.vocabularyController.update);
 router.delete("/:id", vocabulary_controller_1.vocabularyController.delete);
 exports.default = router;

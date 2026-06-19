@@ -38,7 +38,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const vocabularySchema = new mongoose_1.Schema({
     topicId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Topic", required: true, index: true },
     word: { type: String, required: true, trim: true },
-    phonetic: { type: String, required: true },
+    phonetic: { type: String, default: "" },
     meaning: { type: String, required: true },
     partOfSpeech: { type: String, required: true },
     example: { type: String, default: "" },

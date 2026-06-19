@@ -2,7 +2,7 @@ import { Document, Types } from "mongoose";
 export interface IVocabulary extends Document {
     topicId: Types.ObjectId;
     word: string;
-    phonetic: string;
+    phonetic?: string;
     meaning: string;
     partOfSpeech: string;
     example: string;
@@ -17,7 +17,7 @@ export interface IVocabulary extends Document {
 export interface CreateVocabularyDTO {
     topicId: string;
     word: string;
-    phonetic: string;
+    phonetic?: string;
     meaning: string;
     partOfSpeech: string;
     example: string;
