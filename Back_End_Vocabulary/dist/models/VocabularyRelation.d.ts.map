@@ -1,0 +1,1 @@
+{"version":3,"file":"VocabularyRelation.d.ts","sourceRoot":"","sources":["../../src/models/VocabularyRelation.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,EAAE,EAAU,QAAQ,EAAE,MAAM,UAAU,CAAC;AAEtD,MAAM,WAAW,mBAAoB,SAAQ,QAAQ;IACnD,YAAY,EAAE,MAAM,CAAC;IACrB,YAAY,EAAE,MAAM,CAAC;IACrB,YAAY,EAAE,SAAS,GAAG,SAAS,GAAG,SAAS,CAAC;CACjD;AAQD,eAAO,MAAM,kBAAkB;;;;;;4BAAsF,CAAC"}

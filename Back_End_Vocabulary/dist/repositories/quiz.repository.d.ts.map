@@ -1,0 +1,1 @@
+{"version":3,"file":"quiz.repository.d.ts","sourceRoot":"","sources":["../../src/repositories/quiz.repository.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,8BAA8B,CAAC;AAElE,eAAO,MAAM,cAAc;mBACN,OAAO,CAAC,aAAa,EAAE,CAAC;mBACtB,MAAM,KAAG,OAAO,CAAC,aAAa,GAAG,IAAI,CAAC;CAC5D,CAAC"}

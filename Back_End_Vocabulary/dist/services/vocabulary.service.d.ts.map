@@ -1,0 +1,1 @@
+{"version":3,"file":"vocabulary.service.d.ts","sourceRoot":"","sources":["../../src/services/vocabulary.service.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,mBAAmB,EAAE,mBAAmB,EAAE,MAAM,oCAAoC,CAAC;AAEnG,eAAO,MAAM,iBAAiB;uBACT,MAAM;kBACX,MAAM;mBACC,mBAAmB;iBAK3B,MAAM,QAAQ,mBAAmB;iBAC3B,MAAM;oBAQT,MAAM;;CAEvB,CAAC"}

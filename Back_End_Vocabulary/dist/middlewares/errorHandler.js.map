@@ -1,0 +1,1 @@
+{"version":3,"file":"errorHandler.js","sourceRoot":"","sources":["../../src/middlewares/errorHandler.ts"],"names":[],"mappings":";;AAGA,oCAGC;AALD,gDAA0C;AAE1C,SAAgB,YAAY,CAAC,GAAU,EAAE,IAAa,EAAE,GAAa,EAAE,KAAmB;IACxF,OAAO,CAAC,KAAK,CAAC,QAAQ,EAAE,GAAG,CAAC,OAAO,CAAC,CAAC;IACrC,OAAO,IAAA,gBAAK,EAAC,GAAG,EAAE,GAAG,CAAC,OAAO,IAAI,uBAAuB,EAAE,GAAG,CAAC,CAAC;AACjE,CAAC"}
