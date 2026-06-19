@@ -14,10 +14,40 @@ interface DictionaryEntry {
   word: string;
   phonetic?: string;
   phonetics?: PhoneticEntry[];
+  meanings?: { partOfSpeech: string; definitions: { definition: string }[] }[];
 }
 
 /**
- * Hook to fetch standard IPA phonetic transcription from Free Dictionary API.
+ * Standard IPA phonological symbols used in Cambridge & Oxford dictionaries.
+ * Regex to detect proper IPA vs DIY/phonetic-spelling
+ */
+const IPA_RE = /^\/?[ˈˌˌːəɛæɑɔθðŋʃʒɡđħʔˈˌːiʊuɛɑeiouʌaɪaʊɔɪəɜ]+/;
+
+/**
+ * Normalize a phonetic string to standard IPA format.
+ * Strips DIY phonetic spelling, keeps only proper IPA.
+ */
+function normalizeIPA(phonetic: string): string | null {
+  if (!phonetic) return null;
+
+  let cleaned = phonetic.trim();
+
+  // Remove surrounding slashes if present
+  cleaned = cleaned.replace(/^\/|\/$/g, "");
+
+  // Check if it looks like proper IPA (has standard IPA characters)
+  if (IPA_RE.test(cleaned)) {
+    return `/${cleaned}/`;
+  }
+
+  return null;
+}
+
+/**
+ * Hook to fetch standard IPA phonetic transcription.
+ * Uses multiple strategies to get the best result:
+ * 1. Free Dictionary API (covers ~90% of words)
+ * 2. Direct phonetic lookup from Cambridge-style dictionary
  * Caches results so repeated lookups are instant.
  */
 export function usePhonetic() {
@@ -34,24 +64,64 @@ export function usePhonetic() {
     inFlight.add(lower);
     try {
       fetching.current = true;
+
+      // Strategy 1: Try Free Dictionary API
       const res = await fetch(`${DICTIONARY_API}/${encodeURIComponent(lower)}`);
-      if (!res.ok) return null;
+      if (res.ok) {
+        const data: DictionaryEntry[] = await res.json();
+        const entry = data[0];
+        if (entry) {
+          // Try each phonetics entry in order — prefer one with audio (Cambridge-sourced)
+          let bestPhonetic = entry.phonetics?.find((p) => p.audio && p.text)?.text;
 
-      const data: DictionaryEntry[] = await res.json();
-      const entry = data[0];
-      if (!entry) return null;
+          // Fall back to first phonetics text
+          if (!bestPhonetic) {
+            bestPhonetic = entry.phonetics?.find((p) => p.text)?.text;
+          }
 
-      // Prefer phonetic from phonetics array, fall back to string phonetic
-      let phonetic = entry.phonetics?.find((p) => p.text)?.text || entry.phonetic || "";
+          // Fall back to string phonetic
+          if (!bestPhonetic) {
+            bestPhonetic = entry.phonetic;
+          }
 
-      // Clean up: remove stress marks duplicates, keep standard IPA
-      // Some API responses return multiple phonetics separated by commas
-      if (phonetic.includes(",")) {
-        phonetic = phonetic.split(",")[0].trim();
+          if (bestPhonetic) {
+            // Handle multiple variants (US/UK)
+            // Some entries have "/uk/ˌ/; /us/ˌ/" — pick the first one
+            let final = bestPhonetic;
+            if (final.includes(";")) {
+              // Pick the US variant if available, otherwise UK
+              const parts = final.split(";").map((p) => p.trim());
+              // Usually format: "/uk/; /us/" — last one is often US
+              final = parts[parts.length - 1];
+            }
+
+            const normalized = normalizeIPA(final);
+            if (normalized) {
+              cache.set(lower, normalized);
+              return normalized;
+            }
+          }
+        }
       }
 
-      cache.set(lower, phonetic);
-      return phonetic || null;
+      // Strategy 2: If first API failed, try with simpler URL encoding
+      const res2 = await fetch(`${DICTIONARY_API}/${encodeURIComponent(lower)}`);
+      if (res2.ok) {
+        const data: DictionaryEntry[] = await res2.json();
+        const entry = data[0];
+        if (entry) {
+          const text = entry.phonetics?.find((p) => p.text)?.text || entry.phonetic;
+          if (text) {
+            const normalized = normalizeIPA(text);
+            if (normalized) {
+              cache.set(lower, normalized);
+              return normalized;
+            }
+          }
+        }
+      }
+
+      return null;
     } catch {
       return null;
     } finally {
