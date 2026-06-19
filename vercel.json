@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd Front_End_Vocabulary && npm install && npm run build",
+  "buildCommand": "cd Front_End_Vocabulary && npm ci && npm run build",
   "outputDirectory": "Front_End_Vocabulary/dist",
-  "installCommand": "cd Front_End_Vocabulary && npm install",
+  "installCommand": "cd Front_End_Vocabulary && npm ci",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
