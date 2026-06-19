@@ -7,11 +7,11 @@ interface Props {
   fallback?: string | null;
 }
 
-/** Detect proper IPA notation vs casual/DIY phonetics */
-const IPA_LIKE = /^\/?[ˈˌˌːəɛæɑɔθðŋʃʒɡđħʔˈˌːiʊuɛɑeiouʌaɪaʊɔɪəɜ]/;
+/** Detect proper IPA characters ( Cambridge / Oxford style ) */
+const HAS_IPA_CHARS = /[ˈˌːəɛæɑɔθðŋʃʒɡ]/;
 
-/** Remove homemade phonetics like /hə-lō/, /good-bī/ */
-const LOOKS_LIKE_DIY = /^\/?[a-zA-Z].*[a-zA-Z]\/?$/;
+/** Detect DIY phonetics like /good-bī/, /CHik-in/, /hə-lō/ */
+const LOOKS_LIKE_DIY = /^[^ˈˌː]*[a-zA-Z][^ˈˌː]*[a-zA-Z][^ˈˌː]*$/;
 
 export default function Phonetic({ word, fallback }: Props) {
   const { fetchPhonetic } = usePhonetic();
@@ -21,8 +21,7 @@ export default function Phonetic({ word, fallback }: Props) {
   useEffect(() => {
     let cancelled = false;
 
-    // If fallback looks like real IPA, use it immediately
-    if (fallback && IPA_LIKE.test(fallback) && !LOOKS_LIKE_DIY.test(fallback)) {
+    if (fallback && HAS_IPA_CHARS.test(fallback) && !LOOKS_LIKE_DIY.test(fallback)) {
       setPhonetic(fallback);
       return;
     }
@@ -30,8 +29,7 @@ export default function Phonetic({ word, fallback }: Props) {
     setLoading(true);
     fetchPhonetic(word).then((result) => {
       if (!cancelled) {
-        // If API returned nothing, show fallback as last resort
-        setPhonetic(result || (fallback && IPA_LIKE.test(fallback) ? fallback : null));
+        setPhonetic(result || null);
         setLoading(false);
       }
     });
@@ -42,20 +40,19 @@ export default function Phonetic({ word, fallback }: Props) {
   if (!phonetic && !loading) return null;
 
   return (
-    <span
-      className="text-sm font-medium"
-      style={{
-        color: "var(--text-body-subtle)",
-        // Use serif for better IPA symbol rendering
-        fontFamily: "'Arial', Helvetica, sans-serif",
-        letterSpacing: "0.3px",
-      }}
-    >
+    <span className="phonetic">
       {loading ? (
         <span className="skeleton inline-block w-20 h-4 align-middle rounded-[4px]" />
       ) : (
         phonetic
       )}
+      <style>{`
+        .phonetic {
+          font-family: "Lucida Sans Unicode", "Gentium Plus", "DejaVu Sans", "Noto Sans", Arial, sans-serif;
+          font-size: 0.85em;
+          letter-spacing: 0.5px;
+        }
+      `}</style>
     </span>
   );
 }
