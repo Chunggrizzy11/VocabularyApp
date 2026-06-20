@@ -7,6 +7,7 @@ import Loading from "../../components/common/Loading";
 import TopicSelector from "../../components/common/TopicSelector";
 import { generateQuiz } from "../../utils/quizGenerator";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
+import { useUISound } from "../../hooks/useUISound";
 
 export default function QuizPage() {
   const [topicId, setTopicId] = useState("");
@@ -16,6 +17,7 @@ export default function QuizPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
+  const { playCorrect, playWrong } = useUISound();
 
   const quizzes = useMemo(() => generateQuiz(words), [words]);
   const containerRef = useAnimatedEntrance([isLoading, quizzes.length, currentIndex, topicId]);
@@ -61,7 +63,7 @@ export default function QuizPage() {
 
     const isCorrect = answer === q.correctAnswer;
     setFeedback(isCorrect ? "correct" : "wrong");
-    if (isCorrect) setScore((s) => s + 1);
+    if (isCorrect) { setScore((s) => s + 1); playCorrect(); } else { playWrong(); }
 
     setTimeout(() => {
       if (currentIndex + 1 >= quizzes.length) {
