@@ -7,7 +7,6 @@ import Loading from "../../components/common/Loading";
 import TopicSelector from "../../components/common/TopicSelector";
 import { generateQuiz } from "../../utils/quizGenerator";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
-import gsap from "gsap";
 
 export default function QuizPage() {
   const [topicId, setTopicId] = useState("");
@@ -16,6 +15,7 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
 
   const quizzes = useMemo(() => generateQuiz(words), [words]);
   const containerRef = useAnimatedEntrance([isLoading, quizzes.length, currentIndex, topicId]);
@@ -26,7 +26,14 @@ export default function QuizPage() {
     setScore(0);
     setSelected(null);
     setShowResult(false);
+    setFeedback(null);
   }, [topicId, quizzes.length]);
+
+  // Reset feedback when question changes
+  useEffect(() => {
+    setSelected(null);
+    setFeedback(null);
+  }, [currentIndex]);
 
   if (isLoading) return <MainLayout><Loading label="Preparing quiz..." /></MainLayout>;
 
@@ -47,30 +54,79 @@ export default function QuizPage() {
   }
 
   const q = quizzes[currentIndex];
+
   const handleAnswer = (answer: string) => {
     if (selected) return;
     setSelected(answer);
 
     const isCorrect = answer === q.correctAnswer;
+    setFeedback(isCorrect ? "correct" : "wrong");
     if (isCorrect) setScore((s) => s + 1);
-
-    const buttons = document.querySelectorAll<HTMLElement>(".quiz-option");
-    buttons.forEach((btn) => {
-      if (btn.textContent === q.correctAnswer) {
-        gsap.to(btn, { backgroundColor: "var(--success-soft)", borderColor: "var(--border-success)", color: "var(--fg-success-strong)", duration: 0.2 });
-      } else if (btn.textContent === answer && !isCorrect) {
-        gsap.to(btn, { backgroundColor: "var(--danger-soft)", borderColor: "var(--border-danger)", color: "var(--fg-danger-strong)", duration: 0.2 });
-      }
-    });
 
     setTimeout(() => {
       if (currentIndex + 1 >= quizzes.length) {
         setShowResult(true);
-      } else {
         setSelected(null);
+        setFeedback(null);
+      } else {
+        // Reset BEFORE advancing index to prevent ghost highlight
+        setSelected(null);
+        setFeedback(null);
         setCurrentIndex((i) => i + 1);
       }
     }, 800);
+  };
+
+  const getOptionStyle = (opt: string): React.CSSProperties => {
+    const base: React.CSSProperties = {
+      padding: "14px 16px",
+      borderRadius: "var(--radius-default)",
+      border: "2px solid var(--border-default)",
+      color: "var(--text-heading)",
+      fontSize: "15px",
+      transition: "all 150ms ease-out",
+      cursor: selected ? "not-allowed" : "pointer",
+      fontWeight: 700,
+    };
+
+    if (!selected || !feedback) {
+      // Not selected yet — show hover-ready state
+      return {
+        ...base,
+        backgroundColor: "var(--neutral-primary-soft)",
+      };
+    }
+
+    if (opt === q.correctAnswer) {
+      // Correct answer — always highlight green
+      return {
+        ...base,
+        backgroundColor: "var(--success-soft)",
+        borderColor: "var(--border-success)",
+        color: "var(--fg-success-strong)",
+        transform: feedback === "correct" ? "scale(1.02)" : "scale(1)",
+        boxShadow: feedback === "correct" ? "0 4px 0 var(--brand-strong)" : "none",
+      };
+    }
+
+    if (opt === selected && feedback === "wrong") {
+      // Wrong answer — highlight red
+      return {
+        ...base,
+        backgroundColor: "var(--danger-soft)",
+        borderColor: "var(--border-danger)",
+        color: "var(--fg-danger-strong)",
+        transform: "scale(0.98)",
+        opacity: 0.8,
+      };
+    }
+
+    // Other options — dimmed
+    return {
+      ...base,
+      backgroundColor: "var(--neutral-primary-soft)",
+      opacity: 0.5,
+    };
   };
 
   if (showResult || currentIndex >= quizzes.length) {
@@ -95,6 +151,7 @@ export default function QuizPage() {
                 setScore(0);
                 setSelected(null);
                 setShowResult(false);
+                setFeedback(null);
               }}
               className="mt-6 font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
               style={{
@@ -129,7 +186,6 @@ export default function QuizPage() {
           </span>
         </div>
 
-        {/* Topic Selector */}
         <div className="mb-6">
           <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
         </div>
@@ -138,7 +194,7 @@ export default function QuizPage() {
           <div className="progress-fill" style={{ width: `${progress}%` }} />
         </div>
 
-        <div className="card p-8">
+        <div className="card p-8" key={currentIndex}>
           <p
             className="text-xs font-bold uppercase tracking-wide mb-2"
             style={{ color: "var(--text-body-subtle)" }}
@@ -157,15 +213,7 @@ export default function QuizPage() {
                 key={i}
                 onClick={() => handleAnswer(opt)}
                 disabled={!!selected}
-                className="quiz-option w-full text-left font-bold transition-all cursor-pointer"
-                style={{
-                  padding: "14px 16px",
-                  borderRadius: "var(--radius-default)",
-                  backgroundColor: "var(--neutral-primary-soft)",
-                  border: "2px solid var(--border-default)",
-                  color: "var(--text-heading)",
-                  fontSize: "15px",
-                }}
+                style={getOptionStyle(opt)}
               >
                 {opt}
               </button>
