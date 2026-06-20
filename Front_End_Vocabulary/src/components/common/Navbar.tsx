@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import VolumeSlider from "./VolumeSlider";
 import Icon from "./Icon";
+import logo from "../../assets/images/Logo.png";
 
 const LINKS = [
   { to: "/", label: "Home" },
@@ -31,16 +32,11 @@ export default function Navbar() {
           to="/"
           className="flex items-center gap-2.5 no-underline group"
         >
-          <div
-            className="w-10 h-10 rounded-[12px] flex items-center justify-center text-base font-extrabold text-white"
-            style={{
-              backgroundColor: "var(--brand)",
-              boxShadow: "0 2px 0 var(--brand-strong)",
-              fontFamily: "var(--font-primary)",
-            }}
-          >
-            P
-          </div>
+          <img
+            src={logo}
+            alt="Parroto"
+            className="w-10 h-10 rounded-[12px] object-cover"
+          />
           <div>
             <span
               className="font-extrabold text-lg tracking-tight"
