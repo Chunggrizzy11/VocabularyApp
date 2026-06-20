@@ -4,6 +4,7 @@ import Loading from "../../components/common/Loading";
 import { Link } from "react-router-dom";
 import { useVocabulary } from "../../hooks/useVocabulary";
 import Icon from "../../components/common/Icon";
+import TopicCard from "../../components/topic/TopicCard";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
 import gsap from "gsap";
 
@@ -175,47 +176,7 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {topics.slice(0, 6).map((topic) => (
-                <Link
-                  key={topic._id}
-                  to={`/topics/${topic._id}`}
-                  className="card no-underline flex items-center gap-3"
-                  style={{ padding: "16px", cursor: "pointer" }}
-                  onMouseEnter={(e) => {
-                    gsap.to(e.currentTarget, {
-                      backgroundColor: "var(--brand-softer)",
-                      borderColor: "var(--border-brand-subtle)",
-                      scale: 1.02,
-                      duration: 0.2,
-                      ease: "power2.out",
-                      overwrite: "auto",
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    gsap.to(e.currentTarget, {
-                      backgroundColor: "var(--neutral-primary-soft)",
-                      borderColor: "var(--border-default)",
-                      scale: 1,
-                      duration: 0.15,
-                      ease: "power2.out",
-                      overwrite: "auto",
-                    });
-                  }}
-                >
-                  <div
-                    className="w-11 h-11 rounded-[12px] flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: "var(--brand-softer)" }}
-                  >
-                    <Icon name="book-open" size={22} color="var(--brand)" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-sm truncate" style={{ color: "var(--text-heading)" }}>
-                      {topic.title}
-                    </p>
-                    <p className="text-xs mt-0.5" style={{ color: "var(--text-body-subtle)" }}>
-                      {topic.totalWords} words
-                    </p>
-                  </div>
-                </Link>
+                <TopicCard key={topic._id} topic={topic} />
               ))}
             </div>
           </>

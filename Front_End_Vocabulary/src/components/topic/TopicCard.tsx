@@ -7,50 +7,41 @@ interface Props {
   topic: Topic;
 }
 
-const TOPIC_ICONS: Record<string, IconName> = {
-  animal: "paw",
-  business: "briefcase",
-  travel: "globe",
-  food: "coffee",
-  technology: "target",
-  education: "book-open",
-  health: "heart",
-  nature: "leaf",
-  art: "palette",
-  music: "music",
+/** Exact match: 18 topic titles → unique icon */
+const TOPIC_ICON_MAP: Record<string, { icon: IconName; color: string }> = {
+  "Greetings & Social": { icon: "speech-bubble", color: "#58CC03" },
+  "Family & People": { icon: "person-smile", color: "#FF86D0" },
+  "Colors & Descriptions": { icon: "palette", color: "#CE82FF" },
+  "Animals": { icon: "paw", color: "#FFC800" },
+  "Food & Drink": { icon: "coffee", color: "#FF9600" },
+  "Body & Health": { icon: "heart", color: "#FF4B4B" },
+  "Weather & Nature": { icon: "weather-cloud", color: "#1CB0F6" },
+  "Daily Life & Time": { icon: "sparkle", color: "#58CC03" },
+  "Travel": { icon: "globe", color: "#1CB0F6" },
+  "Shopping & Money": { icon: "shopping-bag", color: "#CE82FF" },
+  "Education & Learning": { icon: "graduation", color: "#58CC03" },
+  "Technology": { icon: "target", color: "#CE82FF" },
+  "Emotions & Feelings": { icon: "star", color: "#FF86D0" },
+  "Business & Work": { icon: "briefcase", color: "#58CC03" },
+  "Science": { icon: "microscope", color: "#1CB0F6" },
+  "Society & Culture": { icon: "globe", color: "#FF9600" },
+  "Home & Living": { icon: "home-filled", color: "#FF9600" },
+  "Clothing & Fashion": { icon: "scissors", color: "#FF86D0" },
 };
 
-const TOPIC_COLORS: Record<string, string> = {
-  animal: "#FFC800",
-  business: "#58CC03",
-  travel: "#1CB0F6",
-  food: "#FF9600",
-  technology: "#CE82FF",
-  education: "#58CC03",
-  health: "#FF4B4B",
-  nature: "#00CD9C",
-  art: "#FF86D0",
-  music: "#DD3EFF",
-};
-
-function getIcon(title: string): IconName {
+function getTopicStyle(title: string): { icon: IconName; color: string } {
+  // Exact match first
+  if (TOPIC_ICON_MAP[title]) return TOPIC_ICON_MAP[title];
+  // Partial match fallback
   const lower = title.toLowerCase();
-  for (const [key, icon] of Object.entries(TOPIC_ICONS)) {
-    if (lower.includes(key)) return icon;
+  for (const [key, style] of Object.entries(TOPIC_ICON_MAP)) {
+    if (lower.includes(key.toLowerCase())) return style;
   }
-  return "book";
-}
-
-function getColor(title: string): string {
-  const lower = title.toLowerCase();
-  for (const [key, color] of Object.entries(TOPIC_COLORS)) {
-    if (lower.includes(key)) return color;
-  }
-  return "var(--brand)";
+  return { icon: "book", color: "var(--brand)" };
 }
 
 export default function TopicCard({ topic }: Props) {
-  const color = getColor(topic.title);
+  const { icon, color } = getTopicStyle(topic.title);
   return (
     <Link
       to={`/topics/${topic._id}`}
@@ -83,10 +74,10 @@ export default function TopicCard({ topic }: Props) {
           </p>
         </div>
         <div
-          className="w-11 h-11 rounded-[12px] flex items-center justify-center shrink-0"
-          style={{ backgroundColor: `${color}15` }}
+          className="w-12 h-12 rounded-[12px] flex items-center justify-center shrink-0"
+          style={{ backgroundColor: `${color}18` }}
         >
-          <Icon name={getIcon(topic.title)} size={22} color={color} />
+          <Icon name={icon} size={24} color={color} />
         </div>
       </div>
       <div className="mt-4">
