@@ -50,21 +50,21 @@ export default function TopicsPage() {
   return (
     <MainLayout>
       <div ref={containerRef} className="max-w-5xl mx-auto">
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
           <div>
-            <h1 className="text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
+            <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
               Topics
             </h1>
-            <p style={{ color: "var(--text-body)" }}>
+            <p className="text-sm md:text-base" style={{ color: "var(--text-body)" }}>
               Choose a topic to start learning
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <Button variant="secondary" onClick={handleReseed} loading={reseed} disabled={reseed || seeding}>
-              <Icon name="refresh" size={16} color="currentColor" /> Re-seed Data
+          <div className="flex items-center gap-2 md:gap-3 w-full sm:w-auto">
+            <Button variant="secondary" onClick={handleReseed} loading={reseed} disabled={reseed || seeding} size="sm">
+              <Icon name="refresh" size={14} color="currentColor" /> Re-seed
             </Button>
-            <Button onClick={handleSeedAll} loading={seeding} disabled={seeding || reseed}>
-              <Icon name="seed" size={16} color="currentColor" /> Auto-Seed All
+            <Button onClick={handleSeedAll} loading={seeding} disabled={seeding || reseed} size="sm">
+              <Icon name="seed" size={14} color="currentColor" /> Auto-Seed
             </Button>
           </div>
         </div>

@@ -179,8 +179,8 @@ export default function QuizPage() {
   return (
     <MainLayout>
       <div ref={containerRef} className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
             Quiz
           </h1>
           <span className="badge">
