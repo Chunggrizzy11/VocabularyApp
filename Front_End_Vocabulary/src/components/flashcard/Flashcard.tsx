@@ -24,13 +24,13 @@ export default function Flashcard({ word, meaning, phonetic }: Props) {
       aria-label={flipped ? `Meaning: ${meaning}. Tap to flip back.` : `Word: ${word}. Tap to reveal meaning.`}
       className="select-none cursor-pointer"
       style={{
-        minHeight: "280px",
+        minHeight: "220px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        padding: "40px 24px",
+        padding: "28px 16px",
         borderRadius: "var(--radius-default)",
         background: flipped ? "var(--brand-softer)" : "var(--neutral-primary-soft)",
         boxShadow: flipped ? "0 2px 0 var(--border-brand-subtle)" : "var(--shadow-xs)",

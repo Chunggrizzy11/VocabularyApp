@@ -29,7 +29,7 @@ export default function WordGeneratorPage() {
     <MainLayout>
       <div className="max-w-4xl mx-auto animate-fade-up">
         <div className="mb-8">
-          <h1 className="text-[36px] font-extrabold flex items-center gap-3" style={{ color: "var(--text-heading)" }}>
+          <h1 className="text-[28px] md:text-[36px] font-extrabold flex items-center gap-3" style={{ color: "var(--text-heading)" }}>
             <Icon name="sparkle" size={36} color="var(--accent-orange)" /> Word Generator
           </h1>
           <p style={{ color: "var(--text-body)" }}>
@@ -37,8 +37,8 @@ export default function WordGeneratorPage() {
           </p>
         </div>
 
-        <div className="card p-6 mb-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="card p-4 sm:p-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div>
               <label className="block text-sm font-bold uppercase tracking-wide mb-2" style={{ color: "var(--text-heading)" }}>Target Topic</label>
               {topicsLoading ? <div className="skeleton h-[48px] rounded-[12px]" /> : (

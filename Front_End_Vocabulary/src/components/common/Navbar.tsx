@@ -21,7 +21,7 @@ export default function Navbar() {
 
   return (
     <aside
-      className="fixed top-0 left-0 z-50 h-screen flex flex-col shrink-0"
+      className="fixed top-0 left-0 z-50 h-screen flex-col shrink-0 hidden md:flex"
       style={{
         width: "220px",
         backgroundColor: "var(--neutral-primary-soft)",

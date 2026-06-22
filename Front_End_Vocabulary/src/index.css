@@ -204,19 +204,30 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh; /* mobile browser address bar fix */
+  -webkit-text-size-adjust: 100%; /* prevent iOS auto-resize on landscape */
+}
 
-/* ── Typography ── */
+/* ── Typography (mobile-first scale) ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
   color: var(--text-heading);
 }
-h1 { font-size: var(--font-size-h1); letter-spacing: -0.4px; }
-h2 { font-size: var(--font-size-4xl); letter-spacing: -0.3px; }
-h3 { font-size: var(--font-size-3xl); letter-spacing: -0.2px; }
-h4 { font-size: var(--font-size-2xl); }
+h1 { font-size: 28px; letter-spacing: -0.3px; }
+h2 { font-size: 24px; letter-spacing: -0.2px; }
+h3 { font-size: 22px; }
+h4 { font-size: 18px; }
+@media (min-width: 768px) {
+  h1 { font-size: var(--font-size-h1); letter-spacing: -0.4px; }
+  h2 { font-size: var(--font-size-4xl); letter-spacing: -0.3px; }
+  h3 { font-size: var(--font-size-3xl); letter-spacing: -0.2px; }
+  h4 { font-size: var(--font-size-2xl); }
+}
 p {
   color: var(--text-body);
   line-height: var(--line-height-base);
@@ -449,4 +460,51 @@ button:focus-visible {
     transition-duration: 0s !important;
     animation-duration: 0s !important;
   }
+}
+
+/* ── Mobile viewport safe areas ── */
+:root {
+  --viewport-height: 100vh;
+}
+
+/* ── Mobile interaction & touch optimizations ── */
+@media (hover: none) and (pointer: coarse) {
+  /* Hide scrollbars on touch devices */
+  ::-webkit-scrollbar { width: 0px; height: 0px; }
+  * { scrollbar-width: none; }
+
+  /* Increase touch targets */
+  .card-interactive { touch-action: manipulation; }
+
+  /* Faster transitions for mobile */
+  * { animation-duration: 0.15s !important; transition-duration: 0.15s !important; }
+}
+
+/* ── Mobile spacing compact (max 480px) ── */
+@media (max-width: 480px) {
+  .card.p-6 { padding: 1rem !important; }
+  .card.p-5 { padding: 0.75rem !important; }
+
+  /* Tighter spacing between sections */
+  .mb-6 { margin-bottom: 1rem !important; }
+  .mb-8 { margin-bottom: 1.25rem !important; }
+  .mt-6 { margin-top: 1rem !important; }
+  .mt-8 { margin-top: 1.25rem !important; }
+  .gap-3 { gap: 0.5rem !important; }
+  .gap-4 { gap: 0.5rem !important; }
+  .p-6 { padding: 1rem !important; }
+  .p-8 { padding: 1rem !important; }
+
+  /* Narrower max-width on small screens */
+  .max-w-2xl { max-width: 100% !important; }
+  .max-w-3xl { max-width: 100% !important; }
+  .max-w-4xl { max-width: 100% !important; }
+  .max-w-5xl { max-width: 100% !important; }
+  .max-w-6xl { max-width: 100% !important; }
+
+  /* Full width buttons on mobile */
+  .w-full-mobile { width: 100% !important; }
+
+  /* Compact grid items on mobile */
+  .grid-cols-2 { gap: 0.5rem !important; }
 }

@@ -43,7 +43,7 @@ export default function QuizPage() {
     return (
       <MainLayout>
         <div ref={containerRef} className="max-w-2xl mx-auto">
-          <h1 className="text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Quiz</h1>
+          <h1 className="text-[28px] md:text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Quiz</h1>
           <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
           <EmptyState
             title="Not enough vocabulary"
@@ -136,15 +136,15 @@ export default function QuizPage() {
     return (
       <MainLayout>
         <div className="max-w-md mx-auto text-center">
-          <div className="card p-8">
+          <div className="card p-4 md:p-8">
             <Icon name="party" size={60} color="var(--brand)" />
-            <h1 className="text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
+            <h1 className="text-[28px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
               Quiz Complete!
             </h1>
-            <p className="text-[36px] font-extrabold mt-4" style={{ color: "var(--brand)" }}>
+            <p className="text-[24px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--brand)" }}>
               {score}/{quizzes.length}
             </p>
-            <p className="mt-2" style={{ color: "var(--text-body)" }}>
+            <p className="mt-2 text-sm md:text-base" style={{ color: "var(--text-body)" }}>
               {pct}% correct
             </p>
             <button
@@ -155,9 +155,9 @@ export default function QuizPage() {
                 setShowResult(false);
                 setFeedback(null);
               }}
-              className="mt-6 font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
+              className="mt-4 md:mt-6 font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
               style={{
-                padding: "14px 20px",
+                padding: "10px 12px",
                 borderRadius: "12px",
                 backgroundColor: "var(--brand)",
                 color: "#FFFFFF",
@@ -196,7 +196,7 @@ export default function QuizPage() {
           <div className="progress-fill" style={{ width: `${progress}%` }} />
         </div>
 
-        <div className="card p-8" key={currentIndex}>
+        <div className="card p-4 sm:p-8" key={currentIndex}>
           <p
             className="text-xs font-bold uppercase tracking-wide mb-2"
             style={{ color: "var(--text-body-subtle)" }}
@@ -224,16 +224,16 @@ export default function QuizPage() {
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-6">
+        <div className="flex items-center justify-between mt-6 gap-2">
           <button
             onClick={() => {
               if (selected) return;
               setCurrentIndex((i) => Math.max(0, i - 1));
             }}
             disabled={currentIndex === 0 || !!selected}
-            className="font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
+            className="font-bold text-[11px] sm:text-sm uppercase tracking-wide inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
             style={{
-              padding: "14px 20px",
+              padding: "14px 12px",
               borderRadius: "12px",
               backgroundColor: currentIndex === 0 || selected ? "var(--neutral-primary-soft)" : "var(--brand)",
               color: currentIndex === 0 || selected ? "var(--text-disabled)" : "#FFFFFF",
@@ -241,12 +241,13 @@ export default function QuizPage() {
               boxShadow: currentIndex === 0 || selected ? "0 2px 0 var(--neutral-tertiary-medium)" : "0 4px 0 var(--brand-strong)",
               cursor: currentIndex === 0 || selected ? "not-allowed" : "pointer",
               opacity: currentIndex === 0 || selected ? 0.5 : 1,
+              minHeight: "48px",
             }}
           >
-            <Icon name="arrow-left" size={14} color={currentIndex === 0 || selected ? "var(--text-disabled)" : "white"} /> Previous
+            <Icon name="arrow-left" size={14} color={currentIndex === 0 || selected ? "var(--text-disabled)" : "white"} /> <span className="hidden sm:inline">Previous</span>
           </button>
 
-          <span className="text-xs font-bold uppercase tracking-wide" style={{ color: "var(--text-body-subtle)" }}>
+          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wide shrink-0" style={{ color: "var(--text-body-subtle)" }}>
             Score: {score}/{currentIndex + 1}
           </span>
 
@@ -256,9 +257,9 @@ export default function QuizPage() {
               setCurrentIndex((i) => Math.min(quizzes.length - 1, i + 1));
             }}
             disabled={currentIndex >= quizzes.length - 1 || !!selected}
-            className="font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
+            className="font-bold text-[11px] sm:text-sm uppercase tracking-wide inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
             style={{
-              padding: "14px 20px",
+              padding: "14px 12px",
               borderRadius: "12px",
               backgroundColor: currentIndex >= quizzes.length - 1 || selected ? "var(--neutral-primary-soft)" : "var(--brand)",
               color: currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "#FFFFFF",
@@ -266,9 +267,10 @@ export default function QuizPage() {
               boxShadow: currentIndex >= quizzes.length - 1 || selected ? "0 2px 0 var(--neutral-tertiary-medium)" : "0 4px 0 var(--brand-strong)",
               cursor: currentIndex >= quizzes.length - 1 || selected ? "not-allowed" : "pointer",
               opacity: currentIndex >= quizzes.length - 1 || selected ? 0.5 : 1,
+              minHeight: "48px",
             }}
           >
-            Next <Icon name="arrow-right" size={14} color={currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "white"} />
+            <span className="hidden sm:inline">Next</span> <Icon name="arrow-right" size={14} color={currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "white"} />
           </button>
         </div>
       </div>

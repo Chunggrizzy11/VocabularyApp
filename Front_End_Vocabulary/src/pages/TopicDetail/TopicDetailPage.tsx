@@ -16,7 +16,7 @@ export default function TopicDetailPage() {
     <MainLayout>
       <div className="max-w-3xl mx-auto animate-fade-up">
         <div className="mb-8">
-          <h1 className="text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Vocabulary</h1>
+          <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Vocabulary</h1>
           <p className="mt-1" style={{ color: "var(--text-body)" }}>{words.length} {words.length <= 1 ? "word" : "words"} to learn</p>
         </div>
 

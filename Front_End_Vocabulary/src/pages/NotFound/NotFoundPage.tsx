@@ -5,9 +5,9 @@ import Icon from "../../components/common/Icon";
 export default function NotFoundPage() {
   return (
     <MainLayout>
-      <div className="max-w-md mx-auto text-center py-16 animate-fade-up">
+      <div className="max-w-md mx-auto text-center py-8 md:py-16 px-4 animate-fade-up">
         <Icon name="search" size={60} color="var(--text-body-subtle)" />
-        <h1 className="text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
+        <h1 className="text-[28px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
           Page not found
         </h1>
         <p className="mt-2" style={{ color: "var(--text-body)" }}>

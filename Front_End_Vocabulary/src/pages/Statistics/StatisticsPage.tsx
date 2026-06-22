@@ -84,7 +84,7 @@ export default function StatisticsPage() {
     <MainLayout>
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
+          <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
             Statistics
           </h1>
           <p style={{ color: "var(--text-body)" }}>
@@ -151,38 +151,40 @@ export default function StatisticsPage() {
         </div>
 
         {/* ── Heatmap ── */}
-        <div className="card p-6">
+        <div className="card p-4 sm:p-6">
           <h3 className="font-bold text-lg mb-2" style={{ color: "var(--text-heading)" }}>
             Activity Heatmap
           </h3>
           <p className="text-xs mb-4" style={{ color: "var(--text-body-subtle)" }}>
             Words created or scheduled for review per day
           </p>
-          {/* Weekday labels */}
-          <div className="grid grid-cols-7 gap-1.5 mb-1">
-            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-              <div key={d} className="text-center text-[10px] font-bold uppercase" style={{ color: "var(--text-body-subtle)" }}>
-                {d}
-              </div>
-            ))}
-          </div>
-          {/* Heatmap grid */}
-          <div className="grid grid-cols-7 gap-1.5">
-            {heatmapData.map((day) => (
-              <div
-                key={day.date}
-                title={`${day.date}: ${day.count} words`}
-                className="w-7 h-7 rounded-[6px] flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
-                style={{
-                  backgroundColor:
-                    day.level === 0 ? "var(--neutral-tertiary-medium)" :
-                    day.level === 1 ? "var(--brand-softer)" :
-                    day.level === 2 ? "var(--brand-soft)" :
-                    day.level === 3 ? "var(--brand)" : "var(--brand-strong)",
-                  border: "2px solid var(--border-default)",
-                }}
-              />
-            ))}
+          <div className="overflow-x-auto">
+            {/* Weekday labels */}
+            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 mb-1" style={{ minWidth: "min(100%, 260px)" }}>
+              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+                <div key={d} className="text-center text-[10px] font-bold uppercase" style={{ color: "var(--text-body-subtle)" }}>
+                  {d}
+                </div>
+              ))}
+            </div>
+            {/* Heatmap grid */}
+            <div className="grid grid-cols-7 gap-1 sm:gap-1.5" style={{ minWidth: "min(100%, 260px)" }}>
+              {heatmapData.map((day) => (
+                <div
+                  key={day.date}
+                  title={`${day.date}: ${day.count} words`}
+                  className="aspect-square rounded-[6px] flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
+                  style={{
+                    backgroundColor:
+                      day.level === 0 ? "var(--neutral-tertiary-medium)" :
+                      day.level === 1 ? "var(--brand-softer)" :
+                      day.level === 2 ? "var(--brand-soft)" :
+                      day.level === 3 ? "var(--brand)" : "var(--brand-strong)",
+                    border: "2px solid var(--border-default)",
+                  }}
+                />
+              ))}
+            </div>
           </div>
           {/* Legend */}
           <div className="flex items-center gap-2 mt-4">

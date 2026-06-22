@@ -13,20 +13,21 @@ const RATINGS: { label: string; rating: SRSRating; color: string; hoverColor: st
 
 export default function ReviewButtons({ onRate }: Props) {
   return (
-    <div className="grid grid-cols-4 gap-4 mt-6">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mt-6">
       {RATINGS.map((r) => (
         <button
           key={r.rating}
           onClick={() => onRate(r.rating)}
-          className="font-bold text-white text-sm uppercase tracking-wide transition-all"
+          className="font-bold text-white text-[11px] sm:text-sm uppercase tracking-wide transition-all"
           style={{
-            padding: "14px 8px",
+            padding: "16px 6px",
             borderRadius: "12px",
             backgroundColor: r.color,
             boxShadow: `0 4px 0 ${r.shadow}`,
             border: "none",
             cursor: "pointer",
-            letterSpacing: "0.8px",
+            letterSpacing: "0.6px",
+            minHeight: "52px",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = r.hoverColor;

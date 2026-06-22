@@ -48,7 +48,7 @@ export default function TopicCard({ topic }: Props) {
       className="card no-underline"
       style={{
         display: "block",
-        padding: "24px",
+        padding: "16px",
         cursor: "pointer",
         transition: "background-color 100ms ease-out, border-color 100ms ease-out, transform 100ms ease-out, box-shadow 100ms ease-out",
       }}

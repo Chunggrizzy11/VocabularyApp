@@ -50,7 +50,7 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         <div ref={containerRef} className="max-w-2xl mx-auto">
-          <h1 className="text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Review</h1>
+          <h1 className="text-[28px] md:text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Review</h1>
           <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
           <EmptyState
             title={isSessionComplete ? "Review complete!" : "No words due for review"}
@@ -73,17 +73,17 @@ export default function ReviewPage() {
   return (
     <MainLayout>
       <div ref={containerRef} className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Review</h1>
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Review</h1>
           <span className="badge">{currentIndex + 1} of {dueItems.length}</span>
         </div>
 
         {/* Topic Selector */}
-        <div className="mb-6">
+        <div className="mb-4 md:mb-6">
           <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
         </div>
 
-        <div className="progress-track mb-8">
+        <div className="progress-track mb-6 md:mb-8">
           <div className="progress-fill" style={{ width: `${progress}%` }} />
         </div>
 
@@ -91,7 +91,7 @@ export default function ReviewPage() {
           <Flashcard word={current.word} meaning={current.meaning} />
         </div>
 
-        <div className="flex items-center justify-center mt-4">
+        <div className="flex items-center justify-center mt-3 md:mt-4">
           <PronunciationButton word={current.word} size="lg" showLabel />
         </div>
 
