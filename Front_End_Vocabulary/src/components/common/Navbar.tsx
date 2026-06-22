@@ -41,7 +41,7 @@ export default function Navbar() {
               className="font-extrabold text-base md:text-lg tracking-tight"
               style={{ color: "var(--text-heading)", fontFamily: "var(--font-primary)" }}
             >
-              Parroto123
+              Parroto
             </span>
             <span
               className="text-[10px] md:text-[11px] font-bold block leading-none mt-0.5 uppercase tracking-wide"
