@@ -8,8 +8,13 @@ export default function MainLayout({ children }: Props) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--neutral-primary-soft)" }}>
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-8">
-        {children}
+      <main
+        className="ml-[220px] px-6 py-6"
+        style={{ minHeight: "100vh" }}
+      >
+        <div className="max-w-6xl mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );

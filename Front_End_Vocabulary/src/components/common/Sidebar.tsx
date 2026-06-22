@@ -14,7 +14,7 @@ const LINKS: { to: string; label: string; icon: IconName }[] = [
   { to: "/statistics", label: "Stats", icon: "chart" },
 ];
 
-export default function Navbar() {
+export default function Sidebar() {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -82,16 +82,14 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Bottom section: Volume + Avatar — same row */}
+      {/* Bottom section: Volume + Avatar */}
       <div
-        className="shrink-0 px-3 py-3 flex items-center gap-3"
+        className="shrink-0 px-5 py-4 flex items-center gap-3"
         style={{ borderTop: "2px solid var(--border-default)" }}
       >
-        <div className="flex-1 min-w-0">
-          <VolumeSlider />
-        </div>
+        <VolumeSlider />
         <div
-          className="w-10 h-10 rounded-[12px] flex items-center justify-center text-sm font-bold text-white shrink-0"
+          className="w-8 h-8 rounded-[12px] flex items-center justify-center text-xs font-bold text-white shrink-0 ml-auto"
           style={{
             backgroundColor: "var(--brand)",
             boxShadow: "0 2px 0 var(--brand-strong)",

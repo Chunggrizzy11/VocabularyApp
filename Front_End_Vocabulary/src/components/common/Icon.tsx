@@ -55,7 +55,9 @@ type IconName =
   | "weather-cloud"
   | "person-smile"
   | "microscope"
-  | "speech-bubble";
+  | "speech-bubble"
+  | "settings"
+  | "chart";
 
 interface Props {
   name: IconName;
@@ -174,6 +176,10 @@ const paths: Record<IconName, string> = {
     "M6 21 L10 17 M18 21 L14 17 M10 17 L14 17 M12 13 L12 17 M9 9 A3 3 0 1 1 15 9 L15 13 L9 13 Z M7 5 L17 5",
   "speech-bubble":
     "M4 4 L20 4 L20 15 L14 15 L10 19 L10 15 L4 15 Z",
+  "settings":
+    "M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2zM12 15a3 3 0 100-6 3 3 0 000 6z",
+  "chart":
+    "M18 20V10M12 20V4M6 20v-6",
 };
 
 export default function Icon({ name, size = 18, color = "currentColor", className, style }: Props) {
