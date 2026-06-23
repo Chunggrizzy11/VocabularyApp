@@ -7,6 +7,7 @@ import Loading from "../../components/common/Loading";
 import EmptyState from "../../components/common/EmptyState";
 import { useState, useEffect } from "react";
 import Icon from "../../components/common/Icon";
+import MobileVolumeButton from "../../components/common/MobileVolumeButton";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
 
 export default function FlashcardPage() {
@@ -23,11 +24,12 @@ export default function FlashcardPage() {
     setFlipKey((k) => k + 1);
   }, [topicId, words.length]);
 
-  if (isLoading) return <MainLayout><Loading label="Loading flashcards..." /></MainLayout>;
+  if (isLoading) return <MainLayout><MobileVolumeButton /><Loading label="Loading flashcards..." /></MainLayout>;
 
   if (words.length === 0) {
     return (
       <MainLayout>
+        <MobileVolumeButton />
         <div ref={containerRef} className="max-w-2xl mx-auto">
           <h1 className="text-[28px] md:text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Flashcard</h1>
           <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
@@ -48,6 +50,7 @@ export default function FlashcardPage() {
 
   return (
     <MainLayout>
+        <MobileVolumeButton />
       <div ref={containerRef} className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-4 md:mb-6">
           <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Flashcard</h1>
