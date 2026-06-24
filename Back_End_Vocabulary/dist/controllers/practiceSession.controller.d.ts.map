@@ -1,0 +1,1 @@
+{"version":3,"file":"practiceSession.controller.d.ts","sourceRoot":"","sources":["../../src/controllers/practiceSession.controller.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAI5C,eAAO,MAAM,yBAAyB;gBAClB,OAAO,OAAO,QAAQ;oBAmBlB,OAAO,OAAO,QAAQ;kBAUxB,OAAO,OAAO,QAAQ;CAS3C,CAAC"}

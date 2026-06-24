@@ -10,6 +10,7 @@ import quizRoutes from "./routes/quiz.routes";
 import statisticsRoutes from "./routes/statistics.routes";
 import generationRoutes from "./routes/generation.routes";
 import seedRoutes from "./routes/seed.routes";
+import practiceSessionRoutes from "./routes/practiceSession.routes";
 
 import { errorHandler } from "./middlewares/errorHandler";
 import { notFound } from "./middlewares/notFound";
@@ -30,6 +31,7 @@ app.use("/api/quiz", quizRoutes);
 app.use("/api/statistics", statisticsRoutes);
 app.use("/api/generation", generationRoutes);
 app.use("/api/seed", seedRoutes);
+app.use("/api/practice-sessions", practiceSessionRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

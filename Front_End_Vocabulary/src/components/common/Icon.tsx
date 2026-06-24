@@ -55,6 +55,7 @@ type IconName =
   | "weather-cloud"
   | "person-smile"
   | "microscope"
+  | "mic"
   | "speech-bubble"
   | "settings"
   | "chart"
@@ -175,6 +176,8 @@ const paths: Record<IconName, string> = {
     "M12 2 A6 6 0 1 0 12 14 A6 6 0 1 0 12 2 Z M7 17 Q12 22 17 17 M9 11 L9.01 11 M15 11 L15.01 11",
   "microscope":
     "M6 21 L10 17 M18 21 L14 17 M10 17 L14 17 M12 13 L12 17 M9 9 A3 3 0 1 1 15 9 L15 13 L9 13 Z M7 5 L17 5",
+  "mic":
+    "M12 1a3 3 0 00-3 3v5a3 3 0 006 0V4a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8",
   "speech-bubble":
     "M4 4 L20 4 L20 15 L14 15 L10 19 L10 15 L4 15 Z",
   "settings":

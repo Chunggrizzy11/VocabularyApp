@@ -10,6 +10,7 @@ const LINKS: { to: string; label: string; icon: IconName }[] = [
   { to: "/generate", label: "Generate", icon: "sparkle" },
   { to: "/flashcard", label: "Flashcard", icon: "flashcard" },
   { to: "/review", label: "Review", icon: "book-open" },
+  { to: "/speaking", label: "Speaking", icon: "mic" },
   { to: "/quiz", label: "Quiz", icon: "target" },
   { to: "/statistics", label: "Stats", icon: "chart" },
 ];

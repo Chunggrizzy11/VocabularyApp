@@ -18,6 +18,7 @@ const MAIN_TABS: TabLink[] = [
 ];
 
 const MORE_TABS: TabLink[] = [
+  { to: "/speaking", label: "Speaking", icon: "mic" },
   { to: "/generate", label: "Generate", icon: "sparkle" },
   { to: "/statistics", label: "Stats", icon: "chart" },
 ];

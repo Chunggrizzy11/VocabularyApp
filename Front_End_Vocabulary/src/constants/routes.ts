@@ -7,4 +7,5 @@ export const ROUTES = {
   QUIZ: "/quiz",
   STATISTICS: "/statistics",
   GENERATE: "/generate",
+  SPEAKING: "/speaking",
 };

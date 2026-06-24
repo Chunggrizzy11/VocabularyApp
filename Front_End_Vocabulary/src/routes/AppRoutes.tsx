@@ -10,6 +10,7 @@ import QuizPage from "../pages/Quiz/QuizPage";
 
 import StatisticsPage from "../pages/Statistics/StatisticsPage";
 import WordGeneratorPage from "../pages/WordGenerator/WordGeneratorPage";
+import SpeakingPracticePage from "../pages/Speaking/SpeakingPracticePage";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
 export default function AppRoutes() {
@@ -24,6 +25,7 @@ export default function AppRoutes() {
       <Route path="/quiz" element={<QuizPage />} />
       <Route path="/statistics" element={<StatisticsPage />} />
       <Route path="/generate" element={<WordGeneratorPage />} />
+      <Route path="/speaking" element={<SpeakingPracticePage />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

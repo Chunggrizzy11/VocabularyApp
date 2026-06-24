@@ -22,6 +22,7 @@ export default function HomePage() {
     { to: "/review", label: "Review", desc: `${dueCount} words due`, icon: "refresh" as const, accent: "var(--brand)" },
     { to: "/flashcard", label: "Flashcard", desc: `${words.length} words`, icon: "flashcard" as const, accent: "#CE82FF" },
     { to: "/quiz", label: "Quiz", desc: "Test yourself", icon: "target" as const, accent: "#1CB0F6" },
+    { to: "/speaking", label: "Speaking", desc: "Practice pronunciation", icon: "mic" as const, accent: "#FF6B6B" },
     { to: "/generate", label: "Generate", desc: "New words", icon: "sparkle" as const, accent: "#FF9600" },
   ];
 
