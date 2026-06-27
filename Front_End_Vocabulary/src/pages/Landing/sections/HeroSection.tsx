@@ -16,19 +16,30 @@ export default function HeroSection() {
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from(headingRef.current, { y: -30, opacity: 0, duration: 0.6 })
-        .from(subtextRef.current, { y: -20, opacity: 0, duration: 0.5 }, "-=0.3")
-        .from(ctasRef.current?.children, { y: 20, opacity: 0, scale: 0.95, duration: 0.4, stagger: 0.1 }, "-=0.2")
-        .from(visualRef.current, { x: 40, opacity: 0, scale: 0.95, duration: 0.6 }, "-=0.4");
+      const heading = headingRef.current;
+      const subtext = subtextRef.current;
+      const ctas = ctasRef.current;
+      const visual = visualRef.current;
 
-      gsap.to(visualRef.current?.querySelector(".parrot-float"), {
-        y: -10,
-        duration: 2.5,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-      });
+      if (!heading || !subtext || !ctas || !visual) return;
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.from(heading, { y: -30, opacity: 0, duration: 0.6 })
+        .from(subtext, { y: -20, opacity: 0, duration: 0.5 }, "-=0.3")
+        .from(Array.from(ctas.children) as Element[], { y: 20, opacity: 0, scale: 0.95, duration: 0.4, stagger: 0.1 }, "-=0.2")
+        .from(visual, { x: 40, opacity: 0, scale: 0.95, duration: 0.6 }, "-=0.4");
+
+      const parrotFloat = visual.querySelector(".parrot-float") as HTMLElement | null;
+      if (parrotFloat instanceof HTMLElement) {
+        gsap.to(parrotFloat, {
+          y: -10,
+          duration: 2.5,
+          yoyo: true,
+          repeat: -1,
+          ease: "sine.inOut",
+        });
+      }
     });
   }, { scope: containerRef });
 

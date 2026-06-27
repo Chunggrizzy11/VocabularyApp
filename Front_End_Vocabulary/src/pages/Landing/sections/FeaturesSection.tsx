@@ -109,7 +109,7 @@ export default function FeaturesSection() {
 
         {/* Bento Grid */}
         <div className="features-grid grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
-          {FEATURES.map((feature, index) => {
+          {FEATURES.map((feature) => {
             const isFeatured = feature.featured;
             const colSpan = isFeatured ? "md:col-span-2" : "md:col-span-1";
             const rowSpan = isFeatured ? "md:row-span-2" : "md:row-span-1";

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "../../store/auth.store";
-import { authService } from "../../services/auth.service";
 import { topicService } from "../../services/topic.service";
 import { vocabularyService } from "../../services/vocabulary.service";
 import { useAdminAnimation } from "../../hooks/useAdminAnimation";
@@ -21,7 +20,7 @@ interface VocabularyCount {
 }
 
 export default function AdminTopicsPage() {
-  const { user } = useAuthStore();
+  const { user: _ } = useAuthStore();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [vocabCounts, setVocabCounts] = useState<VocabularyCount>({});
   const [isLoading, setIsLoading] = useState(true);

@@ -102,7 +102,7 @@ export default function TrustedBySection() {
               src={getLogoUrl(logo.slug, logo.fallbackUrl)}
               alt={`${logo.name} logo`}
               className="h-5 md:h-6 opacity-50 grayscale transition-all duration-300 hover:opacity-70 hover:grayscale-0"
-              fetchpriority={i < 6 ? "high" : "low"}
+              fetchPriority={i < 6 ? "high" : "low"}
               onError={(e) => {
                 const target = e.currentTarget;
                 target.style.display = "none";

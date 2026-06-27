@@ -16,7 +16,7 @@ interface SeedResponse {
 }
 
 export default function AdminDashboardPage() {
-  const { user } = useAuthStore();
+  const { user: _user } = useAuthStore();
   const [stats, setStats] = useState<Stats | null>(null);
   const [userCount, setUserCount] = useState(0);
   const [seeding, setSeeding] = useState(false);

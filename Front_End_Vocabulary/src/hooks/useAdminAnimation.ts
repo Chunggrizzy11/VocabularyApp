@@ -41,7 +41,8 @@ export function useAdminAnimation(
         reduceMotion: "(prefers-reduced-motion: reduce)",
       },
       (context) => {
-        const { reduceMotion } = context.conditions;
+        const conditions = context.conditions;
+        const reduceMotion = conditions?.reduceMotion;
         // Khi user prefers reduced-motion → skip hết
         if (reduceMotion) return;
 
@@ -100,7 +101,7 @@ export function useAdminAnimation(
 
     // Cleanup matchMedia khi unmount
     return () => mm.revert();
-  }, deps);
+  }, deps as unknown[]);
 
   return containerRef;
 }

@@ -1,78 +1,82 @@
 import { api } from "./api";
 
 interface AuthResponse {
-  success: boolean;
-  data: {
-    token: string;
-    user: {
-      _id: string;
-      name: string;
-      email: string;
-      role: "user" | "admin";
-    };
-  };
-}
-
-interface UserResponse {
-  success: boolean;
-  data: {
+  token: string;
+  user: {
     _id: string;
     name: string;
     email: string;
     role: "user" | "admin";
   };
+  fieldErrors?: Record<string, string>;
+  message?: string;
+}
+
+interface UserData {
+  _id: string;
+  name: string;
+  email: string;
+  role: "user" | "admin";
 }
 
 interface UsersResponse {
-  success: boolean;
-  data: Array<{
-    _id: string;
-    name: string;
-    email: string;
-    role: "user" | "admin";
-    createdAt: string;
-  }>;
+  _id: string;
+  name: string;
+  email: string;
+  role: "user" | "admin";
+  createdAt: string;
+}
+
+interface FieldError extends Error {
+  fieldErrors?: Record<string, string>;
+}
+
+function extractFieldErrors(error: unknown): FieldError | null {
+  const axiosError = error as { response?: { data?: AuthResponse } };
+  if (axiosError.response?.data && axiosError.response.data.fieldErrors) {
+    const err = new Error(axiosError.response.data.message || "Request failed") as FieldError;
+    err.fieldErrors = axiosError.response.data.fieldErrors;
+    return err;
+  }
+  return null;
 }
 
 export const authService = {
   async login(email: string, password: string) {
     try {
-      const response = await api.post("/auth/login", { email, password });
-      // The API currently returns errors in a specific format
-      if (!response.success) {
-        if (response.fieldErrors) {
-          const err = new Error(response.message || "Login failed");
-          err.fieldErrors = response.fieldErrors;
-          throw err;
-        }
-        throw new Error(response.message || "Login failed");
+      const response = await api.post<AuthResponse>("/auth/login", { email, password });
+      if (response.fieldErrors) {
+        const err = new Error(response.message || "Login failed") as FieldError;
+        err.fieldErrors = response.fieldErrors;
+        throw err;
       }
-      return response.data as AuthResponse['data'];
-    } catch (error) {
+      return { token: response.token, user: response.user };
+    } catch (error: unknown) {
+      const fieldError = extractFieldErrors(error);
+      if (fieldError) throw fieldError;
       throw error;
     }
   },
 
   async register(name: string, email: string, password: string) {
     try {
-      const response = await api.post("/auth/register", { name, email, password });
-      if (!response.success) {
-        if (response.fieldErrors) {
-          const err = new Error(response.message || "Registration failed");
-          err.fieldErrors = response.fieldErrors;
-          throw err;
-        }
-        throw new Error(response.message || "Registration failed");
+      const response = await api.post<AuthResponse>("/auth/register", { name, email, password });
+      if (response.fieldErrors) {
+        const err = new Error(response.message || "Registration failed") as FieldError;
+        err.fieldErrors = response.fieldErrors;
+        throw err;
       }
-      return response.data as AuthResponse['data'];
-    } catch (error) {
+      return { token: response.token, user: response.user };
+    } catch (error: unknown) {
+      const fieldError = extractFieldErrors(error);
+      if (fieldError) throw fieldError;
       throw error;
     }
   },
 
   getMe: () =>
-    api.get<UserResponse>("/auth/me").then(r => r.data),
+    api.get<UserData>("/auth/me"),
 
   getUsers: () =>
-    api.get<UsersResponse>("/auth/users").then(r => r.data),
+    api.get<UsersResponse[]>("/auth/users"),
 };

@@ -13,7 +13,7 @@ interface User {
 }
 
 export default function AdminUsersPage() {
-  const { user } = useAuthStore();
+  const { user: _ } = useAuthStore();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
