@@ -4,10 +4,11 @@ export function validateRequest(keys: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     const missing = keys.filter((k) => !(k in req.body));
     if (missing.length > 0) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: `Missing required fields: ${missing.join(", ")}`,
       });
+      return;
     }
     next();
   };

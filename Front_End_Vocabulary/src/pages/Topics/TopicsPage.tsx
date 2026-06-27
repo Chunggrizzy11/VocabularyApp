@@ -1,5 +1,4 @@
 import { useState } from "react";
-import MainLayout from "../../layouts/MainLayout";
 import { useTopics } from "../../hooks/useTopics";
 import TopicCard from "../../components/topic/TopicCard";
 import Button from "../../components/common/Button";
@@ -48,11 +47,10 @@ export default function TopicsPage() {
   };
 
   return (
-    <MainLayout>
-      <div ref={containerRef} className="max-w-5xl mx-auto">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
+      <div ref={containerRef} className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-5 md:mb-8">
           <div>
-            <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
+            <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
               Topics
             </h1>
             <p className="text-sm md:text-base" style={{ color: "var(--text-body)" }}>
@@ -122,6 +120,5 @@ export default function TopicsPage() {
           </div>
         )}
       </div>
-    </MainLayout>
   );
 }

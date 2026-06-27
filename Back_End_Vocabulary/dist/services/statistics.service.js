@@ -4,10 +4,10 @@ exports.statisticsService = void 0;
 const Vocabulary_1 = require("../models/Vocabulary");
 const ReviewHistory_1 = require("../models/ReviewHistory");
 exports.statisticsService = {
-    getUserStats: async () => {
+    getUserStats: async (userId) => {
         const totalWordsLearned = await Vocabulary_1.Vocabulary.countDocuments({ srsLevel: { $gte: 1 } });
         const totalWordsMastered = await Vocabulary_1.Vocabulary.countDocuments({ srsLevel: { $gte: 4 } });
-        const totalReviewSessions = await ReviewHistory_1.ReviewHistory.countDocuments();
+        const totalReviewSessions = await ReviewHistory_1.ReviewHistory.countDocuments({ userId });
         return {
             totalWordsLearned,
             totalWordsMastered,
@@ -20,22 +20,22 @@ exports.statisticsService = {
             lastActiveDate: null,
         };
     },
-    getLearningProgress: async (days = 30) => {
+    getLearningProgress: async (userId, days = 30) => {
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
         return ReviewHistory_1.ReviewHistory.aggregate([
-            { $match: { reviewedAt: { $gte: startDate } } },
+            { $match: { userId, reviewedAt: { $gte: startDate } } },
             { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$reviewedAt" } }, wordsReviewed: { $sum: 1 } } },
             { $sort: { _id: 1 } },
             { $project: { date: "$_id", wordsReviewed: 1, _id: 0 } },
         ]);
     },
-    getHeatmapData: async (year) => {
+    getHeatmapData: async (userId, year) => {
         const startYear = year || new Date().getFullYear();
         const start = new Date(startYear, 0, 1);
         const end = new Date(startYear, 11, 31);
         const records = await ReviewHistory_1.ReviewHistory.aggregate([
-            { $match: { reviewedAt: { $gte: start, $lte: end } } },
+            { $match: { userId, reviewedAt: { $gte: start, $lte: end } } },
             { $group: {
                     _id: { $dateToString: { format: "%Y-%m-%d", date: "$reviewedAt" } },
                     count: { $sum: 1 },

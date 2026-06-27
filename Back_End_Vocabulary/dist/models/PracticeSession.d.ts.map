@@ -1,1 +1,1 @@
-{"version":3,"file":"PracticeSession.d.ts","sourceRoot":"","sources":["../../src/models/PracticeSession.ts"],"names":[],"mappings":"AAAA,OAAO,QAAoB,MAAM,UAAU,CAAC;AAC5C,OAAO,KAAK,EAAE,gBAAgB,EAAgB,MAAM,yCAAyC,CAAC;AA8B9F,eAAO,MAAM,eAAe;;;;;;yBAA6E,CAAC"}
+{"version":3,"file":"PracticeSession.d.ts","sourceRoot":"","sources":["../../src/models/PracticeSession.ts"],"names":[],"mappings":"AAAA,OAAO,QAAoB,MAAM,UAAU,CAAC;AAC5C,OAAO,KAAK,EAAE,gBAAgB,EAAgB,MAAM,yCAAyC,CAAC;AA+B9F,eAAO,MAAM,eAAe;;;;;;yBAA6E,CAAC"}

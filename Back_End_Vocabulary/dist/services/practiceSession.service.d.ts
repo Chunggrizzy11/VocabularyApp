@@ -5,9 +5,10 @@ export declare const practiceSessionService: {
         topicId?: string;
         topicName?: string;
         startedAt: Date;
+        userId?: string;
     }): Promise<IPracticeSession>;
-    getHistory(limit?: number): Promise<IPracticeSession[]>;
-    getStats(topicId?: string): Promise<{
+    getHistory(userId: string, limit?: number): Promise<IPracticeSession[]>;
+    getStats(userId: string, topicId?: string): Promise<{
         totalSessions: number;
         totalWordsPracticed: number;
         averageScore: number;

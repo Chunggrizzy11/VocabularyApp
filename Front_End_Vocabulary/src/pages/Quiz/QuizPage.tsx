@@ -1,4 +1,3 @@
-import MainLayout from "../../layouts/MainLayout";
 import { useVocabulary } from "../../hooks/useVocabulary";
 import { useEffect, useMemo, useState } from "react";
 import EmptyState from "../../components/common/EmptyState";
@@ -37,21 +36,19 @@ export default function QuizPage() {
     setFeedback(null);
   }, [currentIndex]);
 
-  if (isLoading) return <MainLayout><Loading label="Preparing quiz..." /></MainLayout>;
+  if (isLoading) return <Loading label="Preparing quiz..." />;
 
   if (quizzes.length === 0) {
     return (
-      <MainLayout>
-        <div ref={containerRef} className="max-w-2xl mx-auto">
-          <h1 className="text-[28px] md:text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Quiz</h1>
-          <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
-          <EmptyState
-            title="Not enough vocabulary"
-            description={topicId ? "This topic needs at least 4 words for a quiz. Add more words or try another topic." : "Add at least 4 words to your topics to generate a quiz"}
-            icon="target"
-          />
-        </div>
-      </MainLayout>
+      <div ref={containerRef} className="max-w-2xl mx-auto px-3 sm:px-4">
+        <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold mb-4 sm:mb-6" style={{ color: "var(--text-heading)" }}>Quiz</h1>
+        <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
+        <EmptyState
+          title="Not enough vocabulary"
+          description={topicId ? "This topic needs at least 4 words for a quiz. Add more words or try another topic." : "Add at least 4 words to your topics to generate a quiz"}
+          icon="target"
+        />
+      </div>
     );
   }
 
@@ -134,146 +131,142 @@ export default function QuizPage() {
   if (showResult || currentIndex >= quizzes.length) {
     const pct = Math.round((score / quizzes.length) * 100);
     return (
-      <MainLayout>
-        <div className="max-w-md mx-auto text-center">
-          <div className="card p-4 md:p-8">
-            <Icon name="party" size={60} color="var(--brand)" />
-            <h1 className="text-[28px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
-              Quiz Complete!
-            </h1>
-            <p className="text-[24px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--brand)" }}>
-              {score}/{quizzes.length}
-            </p>
-            <p className="mt-2 text-sm md:text-base" style={{ color: "var(--text-body)" }}>
-              {pct}% correct
-            </p>
-            <button
-              onClick={() => {
-                setCurrentIndex(0);
-                setScore(0);
-                setSelected(null);
-                setShowResult(false);
-                setFeedback(null);
-              }}
-              className="mt-4 md:mt-6 font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
-              style={{
-                padding: "10px 12px",
-                borderRadius: "12px",
-                backgroundColor: "var(--brand)",
-                color: "#FFFFFF",
-                boxShadow: "0 4px 0 var(--brand-strong)",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              <Icon name="refresh" size={14} color="white" /> Try Again
-            </button>
-          </div>
+      <div className="max-w-md mx-auto text-center px-3">
+        <div className="card p-5 sm:p-8">
+          <Icon name="party" size={48} color="var(--brand)" />
+          <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
+            Quiz Complete!
+          </h1>
+          <p className="text-[24px] sm:text-[36px] font-extrabold mt-3" style={{ color: "var(--brand)" }}>
+            {score}/{quizzes.length}
+          </p>
+          <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--text-body)" }}>
+            {pct}% correct
+          </p>
+          <button
+            onClick={() => {
+              setCurrentIndex(0);
+              setScore(0);
+              setSelected(null);
+              setShowResult(false);
+              setFeedback(null);
+            }}
+            className="mt-4 sm:mt-6 font-bold text-xs sm:text-sm uppercase tracking-wide inline-flex items-center gap-1.5"
+            style={{
+              padding: "10px 12px",
+              borderRadius: "12px",
+              backgroundColor: "var(--brand)",
+              color: "#FFFFFF",
+              boxShadow: "0 4px 0 var(--brand-strong)",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            <Icon name="refresh" size={14} color="white" /> Try Again
+          </button>
         </div>
-      </MainLayout>
+      </div>
     );
   }
 
   const progress = ((currentIndex + 1) / quizzes.length) * 100;
 
   return (
-    <MainLayout>
-      <div ref={containerRef} className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-4 md:mb-6">
-          <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
-            Quiz
-          </h1>
-          <span className="badge">
-            {currentIndex + 1} of {quizzes.length}
-          </span>
-        </div>
+    <div ref={containerRef} className="max-w-2xl mx-auto px-3 sm:px-4">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
+        <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>
+          Quiz
+        </h1>
+        <span className="badge">
+          {currentIndex + 1} of {quizzes.length}
+        </span>
+      </div>
 
-        <div className="mb-6">
-          <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
-        </div>
+      <div className="mb-4 sm:mb-6">
+        <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
+      </div>
 
-        <div className="progress-track mb-8">
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
-        </div>
+      <div className="progress-track mb-6 sm:mb-8">
+        <div className="progress-fill" style={{ width: `${progress}%` }} />
+      </div>
 
-        <div className="card p-4 sm:p-8" key={currentIndex}>
-          <p
-            className="text-xs font-bold uppercase tracking-wide mb-2"
-            style={{ color: "var(--text-body-subtle)" }}
-          >
-            {q.type === "meaning-to-word" ? "Definition → Word" : "Word → Definition"}
-          </p>
-          <p
-            className="text-xl font-bold mb-6"
-            style={{ color: "var(--text-heading)" }}
-          >
-            {q.question}
-          </p>
-          <div className="grid gap-3">
-            {q.options.map((opt, i) => (
-              <button
-                key={i}
-                onClick={() => handleAnswer(opt)}
-                disabled={!!selected}
-                style={getOptionStyle(opt)}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between mt-6 gap-2">
-          <button
-            onClick={() => {
-              if (selected) return;
-              setCurrentIndex((i) => Math.max(0, i - 1));
-            }}
-            disabled={currentIndex === 0 || !!selected}
-            className="font-bold text-[11px] sm:text-sm uppercase tracking-wide inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
-            style={{
-              padding: "14px 12px",
-              borderRadius: "12px",
-              backgroundColor: currentIndex === 0 || selected ? "var(--neutral-primary-soft)" : "var(--brand)",
-              color: currentIndex === 0 || selected ? "var(--text-disabled)" : "#FFFFFF",
-              border: "2px solid " + (currentIndex === 0 || selected ? "var(--border-default)" : "transparent"),
-              boxShadow: currentIndex === 0 || selected ? "0 2px 0 var(--neutral-tertiary-medium)" : "0 4px 0 var(--brand-strong)",
-              cursor: currentIndex === 0 || selected ? "not-allowed" : "pointer",
-              opacity: currentIndex === 0 || selected ? 0.5 : 1,
-              minHeight: "48px",
-            }}
-          >
-            <Icon name="arrow-left" size={14} color={currentIndex === 0 || selected ? "var(--text-disabled)" : "white"} /> <span className="hidden sm:inline">Previous</span>
-          </button>
-
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wide shrink-0" style={{ color: "var(--text-body-subtle)" }}>
-            Score: {score}/{currentIndex + 1}
-          </span>
-
-          <button
-            onClick={() => {
-              if (selected) return;
-              setCurrentIndex((i) => Math.min(quizzes.length - 1, i + 1));
-            }}
-            disabled={currentIndex >= quizzes.length - 1 || !!selected}
-            className="font-bold text-[11px] sm:text-sm uppercase tracking-wide inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
-            style={{
-              padding: "14px 12px",
-              borderRadius: "12px",
-              backgroundColor: currentIndex >= quizzes.length - 1 || selected ? "var(--neutral-primary-soft)" : "var(--brand)",
-              color: currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "#FFFFFF",
-              border: "2px solid " + (currentIndex >= quizzes.length - 1 || selected ? "var(--border-default)" : "transparent"),
-              boxShadow: currentIndex >= quizzes.length - 1 || selected ? "0 2px 0 var(--neutral-tertiary-medium)" : "0 4px 0 var(--brand-strong)",
-              cursor: currentIndex >= quizzes.length - 1 || selected ? "not-allowed" : "pointer",
-              opacity: currentIndex >= quizzes.length - 1 || selected ? 0.5 : 1,
-              minHeight: "48px",
-            }}
-          >
-            <span className="hidden sm:inline">Next</span> <Icon name="arrow-right" size={14} color={currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "white"} />
-          </button>
+      <div className="card p-4 sm:p-8" key={currentIndex}>
+        <p
+          className="text-xs font-bold uppercase tracking-wide mb-2"
+          style={{ color: "var(--text-body-subtle)" }}
+        >
+          {q.type === "meaning-to-word" ? "Definition → Word" : "Word → Definition"}
+        </p>
+        <p
+          className="text-lg sm:text-xl font-bold mb-4 sm:mb-6"
+          style={{ color: "var(--text-heading)" }}
+        >
+          {q.question}
+        </p>
+        <div className="grid gap-2 sm:gap-3">
+          {q.options.map((opt, i) => (
+            <button
+              key={i}
+              onClick={() => handleAnswer(opt)}
+              disabled={!!selected}
+              style={getOptionStyle(opt)}
+            >
+              {opt}
+            </button>
+          ))}
         </div>
       </div>
-    </MainLayout>
+
+      {/* Navigation */}
+      <div className="flex items-center justify-between mt-4 sm:mt-6 gap-2">
+        <button
+          onClick={() => {
+            if (selected) return;
+            setCurrentIndex((i) => Math.max(0, i - 1));
+          }}
+          disabled={currentIndex === 0 || !!selected}
+          className="font-bold text-[11px] sm:text-sm uppercase tracking-wide inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
+          style={{
+            padding: "14px 12px",
+            borderRadius: "12px",
+            backgroundColor: currentIndex === 0 || selected ? "var(--neutral-primary-soft)" : "var(--brand)",
+            color: currentIndex === 0 || selected ? "var(--text-disabled)" : "#FFFFFF",
+            border: "2px solid " + (currentIndex === 0 || selected ? "var(--border-default)" : "transparent"),
+            boxShadow: currentIndex === 0 || selected ? "0 2px 0 var(--neutral-tertiary-medium)" : "0 4px 0 var(--brand-strong)",
+            cursor: currentIndex === 0 || selected ? "not-allowed" : "pointer",
+            opacity: currentIndex === 0 || selected ? 0.5 : 1,
+            minHeight: "48px",
+          }}
+        >
+          <Icon name="arrow-left" size={14} color={currentIndex === 0 || selected ? "var(--text-disabled)" : "white"} /> <span className="hidden sm:inline">Previous</span>
+        </button>
+
+        <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wide shrink-0" style={{ color: "var(--text-body-subtle)" }}>
+          Score: {score}/{currentIndex + 1}
+        </span>
+
+        <button
+          onClick={() => {
+            if (selected) return;
+            setCurrentIndex((i) => Math.min(quizzes.length - 1, i + 1));
+          }}
+          disabled={currentIndex >= quizzes.length - 1 || !!selected}
+          className="font-bold text-[11px] sm:text-sm uppercase tracking-wide inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none"
+          style={{
+            padding: "14px 12px",
+            borderRadius: "12px",
+            backgroundColor: currentIndex >= quizzes.length - 1 || selected ? "var(--neutral-primary-soft)" : "var(--brand)",
+            color: currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "#FFFFFF",
+            border: "2px solid " + (currentIndex >= quizzes.length - 1 || selected ? "var(--border-default)" : "transparent"),
+            boxShadow: currentIndex >= quizzes.length - 1 || selected ? "0 2px 0 var(--neutral-tertiary-medium)" : "0 4px 0 var(--brand-strong)",
+            cursor: currentIndex >= quizzes.length - 1 || selected ? "not-allowed" : "pointer",
+            opacity: currentIndex >= quizzes.length - 1 || selected ? 0.5 : 1,
+            minHeight: "48px",
+          }}
+        >
+          <span className="hidden sm:inline">Next</span> <Icon name="arrow-right" size={14} color={currentIndex >= quizzes.length - 1 || selected ? "var(--text-disabled)" : "white"} />
+        </button>
+      </div>
+    </div>
   );
 }

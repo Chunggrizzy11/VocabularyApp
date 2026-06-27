@@ -18,7 +18,11 @@
       "Bash(curl -s \"https://raw.githubusercontent.com/anthropics/skills/main/skills/frontend-design/SKILL.md\" -o \"/d/antigravity-skills/frontend-design/SKILL.md\")",
       "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"education vocabulary learning app modern clean\" --design-system -p \"KMate Parroto Vocabulary\")",
       "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"education vocabulary app clean modern readable light mode\" --design-system -p \"KMate Vocabulary\")",
-      "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"color contrast accessible light mode readability\" --domain ux)"
+      "Bash(python \"/d/antigravity-skills/ui-ux-pro-max/scripts/search.py\" \"color contrast accessible light mode readability\" --domain ux)",
+      "Bash(curl -s -X POST http://localhost:3000/api/health)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -X POST http://localhost:3001/test -H \"Content-Type: application/json\" -d '{\"test\":\"data\"}')",
+      "Bash(pkill -f \"node.*3001\")"
     ],
     "additionalDirectories": [
       "D:\\antigravity-skills"

@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/auth.store";
 import VolumeSlider from "./VolumeSlider";
 import Icon from "./Icon";
 import type { IconName } from "./Icon";
@@ -22,11 +23,18 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <>
-      {/* Toggle button - chỉ hiện khi sidebar đang mở */}
+      {/* Toggle button */}
       {!collapsed && (
         <button
           onClick={onToggle}
@@ -51,7 +59,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         </button>
       )}
 
-      {/* Expand button - chỉ hiện khi sidebar đang ẩn */}
+      {/* Expand button */}
       {collapsed && (
         <button
           onClick={onToggle}
@@ -138,23 +146,63 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 {link.label}
               </Link>
             ))}
+
+            {/* Admin link - only show for admin users */}
+            {user?.role === "admin" && (
+              <Link
+                to="/admin"
+                className="flex items-center gap-3 px-4 py-2.5 text-[13px] font-semibold no-underline transition-all duration-150 mt-2"
+                style={{
+                  borderRadius: "var(--radius-default)",
+                  backgroundColor: location.pathname.startsWith("/admin") ? "var(--brand-softer)" : "transparent",
+                  color: location.pathname.startsWith("/admin") ? "var(--fg-brand-strong)" : "var(--text-body)",
+                  borderTop: "1px solid var(--border-default)",
+                  paddingTop: "10px",
+                }}
+              >
+                <Icon
+                  name="settings"
+                  size={18}
+                  color={location.pathname.startsWith("/admin") ? "var(--fg-brand-strong)" : "var(--text-body)"}
+                />
+                Admin
+              </Link>
+            )}
           </div>
         </nav>
 
-        {/* Bottom section: Volume + Avatar */}
+        {/* Bottom section: Volume + User + Logout */}
         <div
-          className="shrink-0 px-5 py-4 flex items-center gap-3"
+          className="shrink-0 px-5 py-4"
           style={{ borderTop: "2px solid var(--border-default)" }}
         >
           <VolumeSlider />
-          <div
-            className="w-8 h-8 rounded-[12px] flex items-center justify-center text-xs font-bold text-white shrink-0 ml-auto"
-            style={{
-              backgroundColor: "var(--brand)",
-              boxShadow: "0 2px 0 var(--brand-strong)",
-            }}
-          >
-            U
+          <div className="flex items-center gap-3 mt-3">
+            <div
+              className="w-8 h-8 rounded-[12px] flex items-center justify-center text-xs font-bold text-white shrink-0"
+              style={{
+                backgroundColor: "var(--brand)",
+                boxShadow: "0 2px 0 var(--brand-strong)",
+              }}
+            >
+              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[12px] font-bold truncate" style={{ color: "var(--text-heading)" }}>
+                {user?.name || "User"}
+              </p>
+              <p className="text-[10px] truncate" style={{ color: "var(--text-body-subtle)" }}>
+                {user?.role || "user"}
+              </p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="p-1.5 rounded-[6px] cursor-pointer hover:opacity-70 transition-opacity"
+              style={{ backgroundColor: "rgba(255, 75, 75, 0.1)" }}
+              title="Logout"
+            >
+              <Icon name="home" size={14} color="#FF4B4B" />
+            </button>
           </div>
         </div>
       </aside>

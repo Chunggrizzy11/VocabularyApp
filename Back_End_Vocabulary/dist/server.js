@@ -23,6 +23,8 @@ app.use(express_1.default.json());
 app.get("/api/health", (_req, res) => {
     res.json({ success: true, message: "API running" });
 });
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+app.use("/api/auth", auth_routes_1.default);
 app.use("/api/topics", topic_routes_1.default);
 app.use("/api/vocabulary", vocabulary_routes_1.default);
 app.use("/api/review", review_routes_1.default);

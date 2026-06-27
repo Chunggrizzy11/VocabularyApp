@@ -12,6 +12,7 @@ type IconName =
   | "menu"
   | "chevron-left"
   | "chevron-right"
+  | "chevron-down"
   | "arrow-left"
   | "arrow-right"
   | "home"
@@ -91,6 +92,8 @@ const paths: Record<IconName, string> = {
     "M15 18l-6-6 6-6",
   "chevron-right":
     "M9 18l6-6-6-6",
+  "chevron-down":
+    "M6 9l6 6 6-6",
   "arrow-left":
     "M19 12H5M12 19l-7-7 7-7",
   "arrow-right":

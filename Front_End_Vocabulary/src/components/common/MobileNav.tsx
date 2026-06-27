@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/auth.store";
 import Icon from "./Icon";
 import type { IconName } from "./Icon";
 
@@ -25,6 +26,8 @@ const MORE_TABS: TabLink[] = [
 
 export default function MobileNav() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
   const [open, setOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +45,6 @@ export default function MobileNav() {
         setOpen(false);
       }
     };
-    // Delay to avoid catching the same tap that opened it
     requestAnimationFrame(() => {
       document.addEventListener("mousedown", handler);
       document.addEventListener("touchstart", handler, { passive: true });
@@ -52,6 +54,12 @@ export default function MobileNav() {
       document.removeEventListener("touchstart", handler);
     };
   }, [open]);
+
+  const handleLogout = () => {
+    setOpen(false);
+    logout();
+    navigate("/");
+  };
 
   const anyMoreActive = MORE_TABS.some((t) => isActive(t.to));
 
@@ -185,6 +193,59 @@ export default function MobileNav() {
               <span className="text-sm font-bold">{link.label}</span>
             </Link>
           ))}
+
+          {/* Admin link for admin users */}
+          {user?.role === "admin" && (
+            <Link
+              to="/admin"
+              className="flex items-center gap-3 px-3 py-3 no-underline transition-all duration-150 mt-1"
+              style={{
+                borderRadius: "var(--radius-default)",
+                backgroundColor: isActive("/admin") ? "var(--brand-softer)" : "transparent",
+                color: isActive("/admin") ? "var(--fg-brand-strong)" : "var(--text-heading)",
+              }}
+            >
+              <Icon name="settings" size={20} color={isActive("/admin") ? "var(--fg-brand-strong)" : "var(--text-body)"} />
+              <span className="text-sm font-bold">Admin</span>
+            </Link>
+          )}
+
+          {/* Divider */}
+          <div className="h-px mx-3 my-2" style={{ backgroundColor: "var(--border-default)" }} />
+
+          {/* User info + Logout */}
+          <div className="flex items-center gap-3 px-3 py-2">
+            <div
+              className="w-9 h-9 rounded-[12px] flex items-center justify-center text-sm font-bold text-white shrink-0"
+              style={{
+                backgroundColor: "var(--brand)",
+                boxShadow: "0 2px 0 var(--brand-strong)",
+              }}
+            >
+              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold truncate" style={{ color: "var(--text-heading)" }}>
+                {user?.name || "User"}
+              </p>
+              <p className="text-[10px] truncate" style={{ color: "var(--text-body-subtle)" }}>
+                {user?.email}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 py-2.5 mx-3 text-sm font-bold rounded-[8px] cursor-pointer transition-all duration-200"
+            style={{
+              backgroundColor: "rgba(255, 75, 75, 0.1)",
+              color: "#FF4B4B",
+              border: "1px solid rgba(255, 75, 75, 0.2)",
+              width: "calc(100% - 24px)",
+            }}
+          >
+            <Icon name="home" size={16} color="#FF4B4B" />
+            Logout
+          </button>
         </div>
       </div>
     </>

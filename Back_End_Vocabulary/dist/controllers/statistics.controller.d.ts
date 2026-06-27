@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 export declare const statisticsController: {
-    getUserStats: (_req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
-    getLearningProgress: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
-    getHeatmapData: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    getUserStats: (req: Request, res: Response) => Promise<void>;
+    getLearningProgress: (req: Request, res: Response) => Promise<void>;
+    getHeatmapData: (req: Request, res: Response) => Promise<void>;
 };
 //# sourceMappingURL=statistics.controller.d.ts.map

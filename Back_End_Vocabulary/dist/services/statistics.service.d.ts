@@ -1,5 +1,5 @@
 export declare const statisticsService: {
-    getUserStats: () => Promise<{
+    getUserStats: (userId: string) => Promise<{
         totalWordsLearned: number;
         totalWordsMastered: number;
         totalReviewSessions: number;
@@ -10,8 +10,8 @@ export declare const statisticsService: {
         totalTimeSpentMs: number;
         lastActiveDate: null;
     }>;
-    getLearningProgress: (days?: number) => Promise<any[]>;
-    getHeatmapData: (year?: number) => Promise<{
+    getLearningProgress: (userId: string, days?: number) => Promise<any[]>;
+    getHeatmapData: (userId: string, year?: number) => Promise<{
         date: any;
         count: any;
         level: number;

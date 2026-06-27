@@ -44,6 +44,7 @@ const practiceWordSchema = new mongoose_1.Schema({
     attemptedAt: { type: Date, required: true, default: Date.now },
 }, { _id: false });
 const practiceSessionSchema = new mongoose_1.Schema({
+    userId: { type: String, required: true, index: true },
     topicId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Topic", default: null, index: true },
     topicName: { type: String },
     words: { type: [practiceWordSchema], required: true },

@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Quiz = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const quizQuestionSchema = new mongoose_1.Schema({
+    userId: { type: String, required: true, index: true },
     vocabularyId: { type: String, required: true },
     type: { type: String, default: "multiple_choice" },
     question: { type: String, required: true },

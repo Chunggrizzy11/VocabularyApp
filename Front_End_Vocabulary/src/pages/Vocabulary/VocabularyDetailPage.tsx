@@ -1,12 +1,10 @@
-import MainLayout from "../../layouts/MainLayout";
 import VocabularyImage from "../../components/vocabulary/VocabularyImage";
 import PronunciationCard from "../../components/vocabulary/PronunciationCard";
 import VocabularyAudio from "../../components/vocabulary/VocabularyAudio";
 
 export default function VocabularyDetailPage() {
   return (
-    <MainLayout>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4 md:px-6">
         <h1 className="text-[28px] md:text-3xl font-bold mb-6" style={{ color: "var(--text-heading)" }}>Word Details</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="card p-5 md:p-6">
@@ -19,6 +17,5 @@ export default function VocabularyDetailPage() {
           </div>
         </div>
       </div>
-    </MainLayout>
   );
 }

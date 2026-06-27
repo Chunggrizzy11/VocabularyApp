@@ -24,6 +24,9 @@ app.get("/api/health", (_req, res) => {
   res.json({ success: true, message: "API running" });
 });
 
+import authRoutes from "./routes/auth.routes";
+
+app.use("/api/auth", authRoutes);
 app.use("/api/topics", topicRoutes);
 app.use("/api/vocabulary", vocabularyRoutes);
 app.use("/api/review", reviewRoutes);

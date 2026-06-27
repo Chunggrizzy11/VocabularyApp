@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import type { IReviewHistory } from "../interfaces/review.interface";
 
 const reviewHistorySchema = new Schema<IReviewHistory>({
+  userId: { type: String, required: true, index: true },
   deviceId: { type: String, default: "browser-device-001" },
   vocabularyId: { type: String, required: true },
   rating: {

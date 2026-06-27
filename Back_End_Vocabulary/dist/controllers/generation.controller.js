@@ -13,13 +13,15 @@ exports.generationController = {
     preview: async (req, res) => {
         try {
             const { topic, count = 10, difficulty } = req.body;
-            if (!topic)
-                return (0, response_1.error)(res, "Missing required field: topic", 400);
+            if (!topic) {
+                (0, response_1.error)(res, "Missing required field: topic", 400);
+                return;
+            }
             const words = await externalDictionary_service_1.externalDictionaryService.generateForTopic(topic, count, difficulty);
-            return (0, response_1.success)(res, words);
+            (0, response_1.success)(res, words);
         }
         catch (e) {
-            return (0, response_1.error)(res, e.message);
+            (0, response_1.error)(res, e.message);
         }
     },
     /**
@@ -31,11 +33,13 @@ exports.generationController = {
         try {
             const { topicId, topic, count = 10, difficulty } = req.body;
             if (!topicId || !topic) {
-                return (0, response_1.error)(res, "Missing required fields: topicId, topic", 400);
+                (0, response_1.error)(res, "Missing required fields: topicId, topic", 400);
+                return;
             }
             const words = await externalDictionary_service_1.externalDictionaryService.generateForTopic(topic, count, difficulty);
             if (words.length === 0) {
-                return (0, response_1.error)(res, `Could not generate any words for topic "${topic}". Try a different topic name.`, 404);
+                (0, response_1.error)(res, `Could not generate any words for topic "${topic}". Try a different topic name.`, 404);
+                return;
             }
             // Save each word to the topic
             const saved = [];
@@ -54,13 +58,13 @@ exports.generationController = {
                 });
                 saved.push(doc);
             }
-            return (0, response_1.created)(res, {
+            (0, response_1.created)(res, {
                 generated: saved.length,
                 words: saved,
             });
         }
         catch (e) {
-            return (0, response_1.error)(res, e.message);
+            (0, response_1.error)(res, e.message);
         }
     },
     /**
@@ -70,15 +74,19 @@ exports.generationController = {
     lookup: async (req, res) => {
         try {
             const word = req.params.word;
-            if (!word)
-                return (0, response_1.error)(res, "Missing word parameter", 400);
+            if (!word) {
+                (0, response_1.error)(res, "Missing word parameter", 400);
+                return;
+            }
             const result = await externalDictionary_service_1.externalDictionaryService.lookupWord(word);
-            if (!result)
-                return (0, response_1.error)(res, `Could not find word "${word}"`, 404);
-            return (0, response_1.success)(res, result);
+            if (!result) {
+                (0, response_1.error)(res, `Could not find word "${word}"`, 404);
+                return;
+            }
+            (0, response_1.success)(res, result);
         }
         catch (e) {
-            return (0, response_1.error)(res, e.message);
+            (0, response_1.error)(res, e.message);
         }
     },
 };

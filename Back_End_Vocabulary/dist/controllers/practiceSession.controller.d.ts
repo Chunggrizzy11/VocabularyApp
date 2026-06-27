@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 export declare const practiceSessionController: {
-    create(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
-    getHistory(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
-    getStats(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+    create(req: Request, res: Response): Promise<void>;
+    getHistory(req: Request, res: Response): Promise<void>;
+    getStats(req: Request, res: Response): Promise<void>;
 };
 //# sourceMappingURL=practiceSession.controller.d.ts.map

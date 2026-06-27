@@ -15,6 +15,7 @@ const practiceWordSchema = new Schema<PracticeWord>(
 
 const practiceSessionSchema = new Schema<IPracticeSession>(
   {
+    userId: { type: String, required: true, index: true },
     topicId: { type: Schema.Types.ObjectId, ref: "Topic", default: null, index: true },
     topicName: { type: String },
     words: { type: [practiceWordSchema], required: true },

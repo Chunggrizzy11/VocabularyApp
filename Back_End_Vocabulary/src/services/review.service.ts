@@ -4,7 +4,7 @@ import { calculateNextReview } from "../utils/srsCalculator";
 import type { SRSRating } from "../interfaces/review.interface";
 
 export const reviewService = {
-  getDueItems: async () => {
+  getDueItems: async (userId?: string) => {
     const words = await vocabularyRepository.findDueForReview();
     return words.map((w) => ({
       vocabularyId: w._id.toString(),
@@ -18,11 +18,11 @@ export const reviewService = {
     }));
   },
 
-  submitResult: async (vocabularyId: string, rating: SRSRating) => {
+  submitResult: async (vocabularyId: string, rating: SRSRating, userId?: string) => {
     const word = await vocabularyRepository.findById(vocabularyId);
     if (!word) throw new Error("Vocabulary not found");
     const { level, nextReviewAt } = calculateNextReview(word.srsLevel, rating);
     await vocabularyRepository.updateSRS(vocabularyId, level, nextReviewAt);
-    await reviewRepository.create(vocabularyId, rating);
+    await reviewRepository.create(vocabularyId, rating, userId);
   },
 };

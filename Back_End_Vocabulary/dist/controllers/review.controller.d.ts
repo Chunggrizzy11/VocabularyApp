@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 export declare const reviewController: {
-    getDueItems: (_req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
-    submitResult: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    getDueItems: (req: Request, res: Response) => Promise<void>;
+    submitResult: (req: Request, res: Response) => Promise<void>;
 };
 //# sourceMappingURL=review.controller.d.ts.map

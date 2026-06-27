@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { quizController } from "../controllers/quiz.controller";
+import { protect } from "../middlewares/auth";
 
 const router = Router();
-router.get("/", quizController.getAll);
-router.get("/:id", quizController.getById);
+router.get("/", protect, quizController.getAll);
+router.get("/:id", protect, quizController.getById);
 
 export default router;

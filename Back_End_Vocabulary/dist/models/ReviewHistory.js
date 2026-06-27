@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReviewHistory = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const reviewHistorySchema = new mongoose_1.Schema({
+    userId: { type: String, required: true, index: true },
     deviceId: { type: String, default: "browser-device-001" },
     vocabularyId: { type: String, required: true },
     rating: {

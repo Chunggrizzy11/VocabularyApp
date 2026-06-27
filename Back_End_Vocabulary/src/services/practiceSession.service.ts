@@ -7,6 +7,7 @@ export const practiceSessionService = {
     topicId?: string;
     topicName?: string;
     startedAt: Date;
+    userId?: string;
   }): Promise<IPracticeSession> {
     const totalWords = data.words.length;
     const averageScore =
@@ -15,6 +16,7 @@ export const practiceSessionService = {
         : 0;
 
     const session = new PracticeSession({
+      userId: data.userId,
       topicId: data.topicId || null,
       topicName: data.topicName,
       words: data.words,
@@ -27,19 +29,20 @@ export const practiceSessionService = {
     return session.save();
   },
 
-  async getHistory(limit: number = 20): Promise<IPracticeSession[]> {
-    return PracticeSession.find()
+  async getHistory(userId: string, limit: number = 20): Promise<IPracticeSession[]> {
+    return PracticeSession.find({ userId })
       .sort({ completedAt: -1 })
       .limit(limit)
       .lean();
   },
 
-  async getStats(topicId?: string): Promise<{
+  async getStats(userId: string, topicId?: string): Promise<{
     totalSessions: number;
     totalWordsPracticed: number;
     averageScore: number;
   }> {
-    const match = topicId ? { topicId } : {};
+    const match: any = { userId };
+    if (topicId) match.topicId = topicId;
 
     const stats = await PracticeSession.aggregate([
       { $match: match },

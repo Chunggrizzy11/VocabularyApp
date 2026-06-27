@@ -35,8 +35,21 @@ async function request<T>(
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || `HTTP ${response.status}`);
+    if (response.status === 401) {
+      localStorage.removeItem("auth_token");
+      window.location.href = "/login";
+    }
+    // Try to parse JSON error with fieldErrors
+    try {
+      const errorJson = await response.json();
+      const err = new Error(errorJson.message || `HTTP ${response.status}`) as any;
+      if (errorJson.fieldErrors) err.fieldErrors = errorJson.fieldErrors;
+      throw err;
+    } catch (e: any) {
+      if (e.fieldErrors) throw e; // re-throw our enriched error
+      // Fallback: plain text
+      throw new Error(e.message || `HTTP ${response.status}`);
+    }
   }
 
   return response.json();

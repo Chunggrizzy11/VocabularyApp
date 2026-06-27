@@ -1,5 +1,6 @@
 import { Document } from "mongoose";
 export interface IQuizQuestion extends Document {
+    userId: string;
     vocabularyId: string;
     type: string;
     question: string;

@@ -7,21 +7,21 @@ exports.quizController = {
     getAll: async (_req, res) => {
         try {
             const quizzes = await quiz_service_1.quizService.getAll();
-            return (0, response_1.success)(res, quizzes);
+            (0, response_1.success)(res, quizzes);
         }
         catch (e) {
-            return (0, response_1.error)(res, e.message);
+            (0, response_1.error)(res, e.message);
         }
     },
     getById: async (req, res) => {
         try {
             const quiz = await quiz_service_1.quizService.getById(req.params.id);
             if (!quiz)
-                return (0, response_1.error)(res, "Quiz not found", 404);
-            return (0, response_1.success)(res, quiz);
+                (0, response_1.error)(res, "Quiz not found", 404);
+            (0, response_1.success)(res, quiz);
         }
         catch (e) {
-            return (0, response_1.error)(res, e.message);
+            (0, response_1.error)(res, e.message);
         }
     },
 };

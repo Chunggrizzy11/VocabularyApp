@@ -10,6 +10,7 @@ export interface PracticeWord {
 }
 
 export interface IPracticeSession extends Document {
+  userId: string;
   topicId: Types.ObjectId | null;
   topicName?: string;
   words: PracticeWord[];

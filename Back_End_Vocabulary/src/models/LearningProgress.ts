@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ILearningProgress extends Document {
+  userId: string;
   deviceId: string;
   vocabularyId: string;
   repetition: number;
@@ -11,6 +12,7 @@ export interface ILearningProgress extends Document {
 }
 
 const learningProgressSchema = new Schema<ILearningProgress>({
+  userId: { type: String, required: true, index: true },
   deviceId: { type: String, default: "browser-device-001" },
   vocabularyId: { type: String, required: true },
   repetition: { type: Number, default: 0 },

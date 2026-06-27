@@ -3,5 +3,5 @@ import { error } from "../utils/response";
 
 export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
   console.error("Error:", err.message);
-  return error(res, err.message || "Internal Server Error", 500);
+  error(res, err.message || "Internal Server Error", 500);
 }

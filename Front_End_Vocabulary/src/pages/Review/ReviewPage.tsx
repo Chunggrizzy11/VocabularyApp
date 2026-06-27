@@ -1,4 +1,3 @@
-import MainLayout from "../../layouts/MainLayout";
 import Flashcard from "../../components/flashcard/Flashcard";
 import ReviewButtons from "../../components/flashcard/ReviewButtons";
 import PronunciationButton from "../../components/common/PronunciationButton";
@@ -44,13 +43,13 @@ export default function ReviewPage() {
     }
   };
 
-  if (vocabLoading) return <MainLayout><Loading label="Preparing review..." /></MainLayout>;
+  if (vocabLoading) return <Loading label="Preparing review..." />;
 
   if (isSessionComplete || dueItems.length === 0) {
     return (
-      <MainLayout>
-        <div ref={containerRef} className="max-w-2xl mx-auto">
-          <h1 className="text-[28px] md:text-[36px] font-extrabold mb-6" style={{ color: "var(--text-heading)" }}>Review</h1>
+      <>
+        <div ref={containerRef} className="max-w-2xl mx-auto px-3 sm:px-4">
+          <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold mb-4 sm:mb-6" style={{ color: "var(--text-heading)" }}>Review</h1>
           <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
           <EmptyState
             title={isSessionComplete ? "Review complete!" : "No words due for review"}
@@ -64,39 +63,37 @@ export default function ReviewPage() {
             icon="party"
           />
         </div>
-      </MainLayout>
+      </>
     );
   }
 
   const progress = ((currentIndex + 1) / dueItems.length) * 100;
 
   return (
-    <MainLayout>
-      <div ref={containerRef} className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-4 md:mb-6">
-          <h1 className="text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Review</h1>
-          <span className="badge">{currentIndex + 1} of {dueItems.length}</span>
-        </div>
-
-        {/* Topic Selector */}
-        <div className="mb-4 md:mb-6">
-          <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
-        </div>
-
-        <div className="progress-track mb-6 md:mb-8">
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
-        </div>
-
-        <div onClick={flipCard}>
-          <Flashcard word={current.word} meaning={current.meaning} />
-        </div>
-
-        <div className="flex items-center justify-center mt-3 md:mt-4">
-          <PronunciationButton word={current.word} size="lg" showLabel />
-        </div>
-
-        <ReviewButtons onRate={(r) => rateCurrent(r)} />
+    <div ref={containerRef} className="max-w-2xl mx-auto px-3 sm:px-4">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
+        <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Review</h1>
+        <span className="badge text-[10px] sm:text-xs">{currentIndex + 1} of {dueItems.length}</span>
       </div>
-    </MainLayout>
+
+      {/* Topic Selector */}
+      <div className="mb-4 md:mb-6">
+        <TopicSelector selectedTopicId={topicId} onChange={setTopicId} />
+      </div>
+
+      <div className="progress-track mb-6 md:mb-8">
+        <div className="progress-fill" style={{ width: `${progress}%` }} />
+      </div>
+
+      <div onClick={flipCard}>
+        <Flashcard word={current.word} meaning={current.meaning} />
+      </div>
+
+      <div className="flex items-center justify-center mt-3 md:mt-4">
+        <PronunciationButton word={current.word} size="lg" showLabel />
+      </div>
+
+      <ReviewButtons onRate={(r) => rateCurrent(r)} />
+    </div>
   );
 }

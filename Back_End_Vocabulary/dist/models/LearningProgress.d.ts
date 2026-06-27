@@ -1,5 +1,6 @@
 import mongoose, { Document } from "mongoose";
 export interface ILearningProgress extends Document {
+    userId: string;
     deviceId: string;
     vocabularyId: string;
     repetition: number;

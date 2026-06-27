@@ -1,4 +1,3 @@
-import MainLayout from "../../layouts/MainLayout";
 import { useTopics } from "../../hooks/useTopics";
 import Loading from "../../components/common/Loading";
 import { Link } from "react-router-dom";
@@ -36,8 +35,7 @@ export default function HomePage() {
   ];
 
   return (
-    <MainLayout>
-      <div ref={containerRef} className="max-w-6xl mx-auto">
+      <div ref={containerRef} className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
         {/* ── Hero ── */}
         <div
           className="relative overflow-hidden rounded-[12px] p-6 md:p-12 mb-6 md:mb-8"
@@ -46,17 +44,17 @@ export default function HomePage() {
             backgroundColor: "var(--brand-softer)",
           }}
         >
-          <div className="relative z-10">
+          <div className="relative z-10 flex flex-col items-start gap-3 md:gap-4">
             <h1
               className="text-[28px] md:text-[48px] font-extrabold leading-tight"
               style={{ color: "var(--fg-brand-strong)" }}
             >
               Welcome back
             </h1>
-            <p className="mt-2 text-sm md:text-lg max-w-lg" style={{ color: "var(--fg-brand)" }}>
+            <p className="text-sm md:text-lg max-w-lg" style={{ color: "var(--fg-brand)" }}>
               Continue your learning journey. You have <strong style={{ color: "var(--fg-brand-strong)" }}>{dueCount}</strong> words waiting for review.
             </p>
-            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="mt-2 md:mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 to="/review"
                 className="inline-flex items-center justify-center gap-2 font-bold text-xs md:text-sm uppercase tracking-wide no-underline"
@@ -214,6 +212,5 @@ export default function HomePage() {
           </div>
         )}
       </div>
-    </MainLayout>
   );
 }

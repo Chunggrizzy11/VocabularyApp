@@ -9,6 +9,7 @@ exports.practiceSessionService = {
             ? Math.round(data.words.reduce((sum, w) => sum + w.score, 0) / totalWords)
             : 0;
         const session = new PracticeSession_1.PracticeSession({
+            userId: data.userId,
             topicId: data.topicId || null,
             topicName: data.topicName,
             words: data.words,
@@ -19,14 +20,16 @@ exports.practiceSessionService = {
         });
         return session.save();
     },
-    async getHistory(limit = 20) {
-        return PracticeSession_1.PracticeSession.find()
+    async getHistory(userId, limit = 20) {
+        return PracticeSession_1.PracticeSession.find({ userId })
             .sort({ completedAt: -1 })
             .limit(limit)
             .lean();
     },
-    async getStats(topicId) {
-        const match = topicId ? { topicId } : {};
+    async getStats(userId, topicId) {
+        const match = { userId };
+        if (topicId)
+            match.topicId = topicId;
         const stats = await PracticeSession_1.PracticeSession.aggregate([
             { $match: match },
             {

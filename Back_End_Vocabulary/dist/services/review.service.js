@@ -5,7 +5,7 @@ const vocabulary_repository_1 = require("../repositories/vocabulary.repository")
 const review_repository_1 = require("../repositories/review.repository");
 const srsCalculator_1 = require("../utils/srsCalculator");
 exports.reviewService = {
-    getDueItems: async () => {
+    getDueItems: async (userId) => {
         const words = await vocabulary_repository_1.vocabularyRepository.findDueForReview();
         return words.map((w) => ({
             vocabularyId: w._id.toString(),
@@ -18,13 +18,13 @@ exports.reviewService = {
             nextReviewAt: w.nextReviewAt?.toISOString() ?? null,
         }));
     },
-    submitResult: async (vocabularyId, rating) => {
+    submitResult: async (vocabularyId, rating, userId) => {
         const word = await vocabulary_repository_1.vocabularyRepository.findById(vocabularyId);
         if (!word)
             throw new Error("Vocabulary not found");
         const { level, nextReviewAt } = (0, srsCalculator_1.calculateNextReview)(word.srsLevel, rating);
         await vocabulary_repository_1.vocabularyRepository.updateSRS(vocabularyId, level, nextReviewAt);
-        await review_repository_1.reviewRepository.create(vocabularyId, rating);
+        await review_repository_1.reviewRepository.create(vocabularyId, rating, userId);
     },
 };
 //# sourceMappingURL=review.service.js.map

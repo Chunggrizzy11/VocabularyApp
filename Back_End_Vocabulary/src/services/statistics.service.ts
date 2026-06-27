@@ -2,10 +2,10 @@ import { Vocabulary } from "../models/Vocabulary";
 import { ReviewHistory } from "../models/ReviewHistory";
 
 export const statisticsService = {
-  getUserStats: async () => {
+  getUserStats: async (userId: string) => {
     const totalWordsLearned = await Vocabulary.countDocuments({ srsLevel: { $gte: 1 } });
     const totalWordsMastered = await Vocabulary.countDocuments({ srsLevel: { $gte: 4 } });
-    const totalReviewSessions = await ReviewHistory.countDocuments();
+    const totalReviewSessions = await ReviewHistory.countDocuments({ userId });
 
     return {
       totalWordsLearned,
@@ -19,22 +19,22 @@ export const statisticsService = {
       lastActiveDate: null,
     };
   },
-  getLearningProgress: async (days: number = 30) => {
+  getLearningProgress: async (userId: string, days: number = 30) => {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
     return ReviewHistory.aggregate([
-      { $match: { reviewedAt: { $gte: startDate } } },
+      { $match: { userId, reviewedAt: { $gte: startDate } } },
       { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$reviewedAt" } }, wordsReviewed: { $sum: 1 } } },
       { $sort: { _id: 1 } },
       { $project: { date: "$_id", wordsReviewed: 1, _id: 0 } },
     ]);
   },
-  getHeatmapData: async (year?: number) => {
+  getHeatmapData: async (userId: string, year?: number) => {
     const startYear = year || new Date().getFullYear();
     const start = new Date(startYear, 0, 1);
     const end = new Date(startYear, 11, 31);
     const records = await ReviewHistory.aggregate([
-      { $match: { reviewedAt: { $gte: start, $lte: end } } },
+      { $match: { userId, reviewedAt: { $gte: start, $lte: end } } },
       { $group: {
           _id: { $dateToString: { format: "%Y-%m-%d", date: "$reviewedAt" } },
           count: { $sum: 1 },

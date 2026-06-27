@@ -13,25 +13,29 @@ export const seedController = {
       targetWordCount: d.targetWordCount || 25,
       levels: d.levels,
     }));
-    return success(res, defs);
+    success(res, defs);
   },
 
   /** POST /api/seed/topic — seed a single topic */
   seedTopic: async (req: Request, res: Response) => {
     try {
       const { title } = req.body;
-      if (!title) return error(res, "Missing required field: title", 400);
+      if (!title) {
+        error(res, "Missing required field: title", 400);
+        return;
+      }
 
       const defs = seedService.getDefinitions();
       const def = defs.find((d) => d.title === title);
       if (!def) {
-        return error(res, `Unknown topic: "${title}". Use GET /api/seed/definitions to see available topics.`, 404);
+        error(res, `Unknown topic: "${title}". Use GET /api/seed/definitions to see available topics.`, 404);
+        return;
       }
 
       const result = await seedService.seedTopic(def);
-      return created(res, result);
+      created(res, result);
     } catch (e: any) {
-      return error(res, e.message);
+      error(res, e.message);
     }
   },
 
@@ -40,13 +44,13 @@ export const seedController = {
     try {
       const results = await seedService.seedAll();
       const total = results.reduce((s, r) => s + r.wordsCreated, 0);
-      return created(res, {
+      created(res, {
         topics: results.length,
         totalWordsCreated: total,
         details: results,
       });
     } catch (e: any) {
-      return error(res, e.message);
+      error(res, e.message);
     }
   },
 
@@ -57,13 +61,13 @@ export const seedController = {
       await Topic.deleteMany({});
       const results = await seedService.seedAll();
       const total = results.reduce((s, r) => s + r.wordsCreated, 0);
-      return created(res, {
+      created(res, {
         topics: results.length,
         totalWordsCreated: total,
         details: results,
       });
     } catch (e: any) {
-      return error(res, e.message);
+      error(res, e.message);
     }
   },
 
@@ -71,13 +75,13 @@ export const seedController = {
   seedIntoTopic: async (req: Request, res: Response) => {
     try {
       const id = req.params.id as string;
-      const { keyword, count = 20 } = req.body;
-      if (!keyword) return error(res, "Missing field: keyword", 400);
+      const { keyword, count = 20 } = req.body as { keyword?: string; count?: number };
+      if (!keyword) { error(res, "Missing field: keyword", 400); return; }
 
-      const created = await seedService.seedIntoTopic(id, keyword, count);
-      return success(res, { created });
+      const createdCount = await seedService.seedIntoTopic(id, keyword!, count);
+      success(res, { created: createdCount });
     } catch (e: any) {
-      return error(res, e.message);
+      error(res, e.message);
     }
   },
 };

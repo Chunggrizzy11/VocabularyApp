@@ -1,6 +1,6 @@
 import type { SRSRating } from "../interfaces/review.interface";
 export declare const reviewService: {
-    getDueItems: () => Promise<{
+    getDueItems: (userId?: string) => Promise<{
         vocabularyId: string;
         word: string;
         phonetic: string | undefined;
@@ -10,6 +10,6 @@ export declare const reviewService: {
         srsLevel: number;
         nextReviewAt: string | null;
     }[]>;
-    submitResult: (vocabularyId: string, rating: SRSRating) => Promise<void>;
+    submitResult: (vocabularyId: string, rating: SRSRating, userId?: string) => Promise<void>;
 };
 //# sourceMappingURL=review.service.d.ts.map

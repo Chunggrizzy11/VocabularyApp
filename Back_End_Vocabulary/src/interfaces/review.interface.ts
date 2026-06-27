@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 export type SRSRating = "again" | "hard" | "good" | "easy";
 
 export interface IReviewHistory extends Document {
+  userId: string;
   deviceId: string;
   vocabularyId: string;
   rating: SRSRating;

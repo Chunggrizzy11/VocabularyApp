@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
-import MainLayout from "../../layouts/MainLayout";
 import Icon from "../../components/common/Icon";
 
 export default function NotFoundPage() {
   return (
-    <MainLayout>
       <div className="max-w-md mx-auto text-center py-8 md:py-16 px-4 animate-fade-up">
         <Icon name="search" size={60} color="var(--text-body-subtle)" />
         <h1 className="text-[28px] md:text-[36px] font-extrabold mt-4" style={{ color: "var(--text-heading)" }}>
@@ -28,6 +26,5 @@ export default function NotFoundPage() {
           ← Back to Home
         </Link>
       </div>
-    </MainLayout>
   );
 }

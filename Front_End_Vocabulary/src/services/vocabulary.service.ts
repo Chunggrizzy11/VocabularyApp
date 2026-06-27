@@ -17,4 +17,12 @@ export const vocabularyService = {
     api.get<ApiResponse<VocabularyWord[]>>("/vocabulary/search", { params: { q: query } }).then(r => r.data),
   getDueForReview: () =>
     api.get<ApiResponse<ReviewItem[]>>("/vocabulary/due-review").then(r => r.data),
+  create: (vocab: {
+    topicId: string; word: string; phonetic: string; meaning: string;
+    partOfSpeech: string; example: string;
+  }) => api.post<ApiResponse<VocabularyWord>>("/vocabulary", vocab).then(r => r.data),
+  update: (id: string, vocab: Partial<VocabularyWord>) =>
+    api.put<ApiResponse<VocabularyWord>>(`/vocabulary/${id}`, vocab).then(r => r.data),
+  delete: (id: string) =>
+    api.delete<ApiResponse<null>>(`/vocabulary/${id}`).then(r => r.data),
 };

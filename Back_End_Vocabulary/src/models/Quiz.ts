@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import type { IQuizQuestion } from "../interfaces/quiz.interface";
 
 const quizQuestionSchema = new Schema<IQuizQuestion>({
+  userId: { type: String, required: true, index: true },
   vocabularyId: { type: String, required: true },
   type: { type: String, default: "multiple_choice" },
   question: { type: String, required: true },
