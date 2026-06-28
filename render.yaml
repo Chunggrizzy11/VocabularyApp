@@ -1,0 +1,16 @@
+# Render Blueprint
+services:
+  - type: web
+    name: vocabularyapp-backend
+    runtime: node
+    repo: https://github.com/Chunggrizzy11/VocabularyApp
+    rootDir: Back_End_Vocabulary
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
