@@ -10,7 +10,9 @@ exports.authController = {
             (0, response_1.created)(res, result);
         }
         catch (e) {
-            (0, response_1.error)(res, e.message, 400);
+            const statusCode = e.fieldErrors ? 400 : 400;
+            const payload = { success: false, message: e.message, fieldErrors: e.fieldErrors || {} };
+            res.status(statusCode).json(payload);
         }
     },
     login: async (req, res) => {
@@ -19,7 +21,9 @@ exports.authController = {
             (0, response_1.success)(res, result);
         }
         catch (e) {
-            (0, response_1.error)(res, e.message, 401);
+            const statusCode = e.fieldErrors ? 400 : 401;
+            const payload = { success: false, message: e.message, fieldErrors: e.fieldErrors || {} };
+            res.status(statusCode).json(payload);
         }
     },
     getMe: async (req, res) => {
