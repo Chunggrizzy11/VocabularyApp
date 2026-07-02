@@ -143,7 +143,7 @@ export default function HowItWorksSection() {
               {/* Connector line (desktop only) */}
               {index < STEPS.length - 1 && (
                 <div
-                  className="hidden md:block absolute left-10 top-20 w-0.5 h-12"
+                  className=""
                   style={{ backgroundColor: "var(--border-default)" }}
                 />
               )}
