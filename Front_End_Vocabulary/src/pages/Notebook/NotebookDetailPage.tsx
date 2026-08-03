@@ -185,7 +185,6 @@ export default function NotebookDetailPage() {
             <NotebookWordCard
               key={word._id}
               word={word}
-              onReview={() => navigate(`/review?notebookId=${notebookId}`)}
             />
           ))}
         </div>
