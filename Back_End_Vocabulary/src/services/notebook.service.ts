@@ -18,9 +18,18 @@ export const notebookService = {
     // Note: In real app, might want to check if word already exists in this notebook
     const wordData = { ...data, notebookId, userId };
     // @ts-ignore
-    return notebookRepository.createWord(userId, wordData);
+    const word = await notebookRepository.createWord(userId, wordData);
+    await notebookRepository.touch(notebookId); // cập nhật updatedAt
+    return word;
   },
-  removeWord: async (wordId: string, userId: string) => notebookRepository.deleteWord(wordId, userId),
+  removeWord: async (wordId: string, userId: string) => {
+    const word = await notebookRepository.deleteWord(wordId, userId);
+    // Cần tìm notebookId của word để touch (hoặc pass notebookId vào hàm)
+    // Hiện tại repository.deleteWord không trả về notebookId
+    // Tạm comment để tránh lỗi, sẽ cần cập nhật repo
+    // await notebookRepository.touch(notebookId);
+    return word;
+  },
   getDueWords: async (notebookId: string, userId: string) => notebookRepository.findDueWords(notebookId, userId),
 
   submitResult: async (wordId: string, rating: SRSRating, userId: string) => {

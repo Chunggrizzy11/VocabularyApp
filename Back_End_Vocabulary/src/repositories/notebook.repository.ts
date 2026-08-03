@@ -5,8 +5,23 @@ import type { CreateNotebookDTO, UpdateNotebookDTO, CreateNotebookWordDTO } from
 
 export const notebookRepository = {
   // ── Notebooks ──
-  findMany: async (userId: string): Promise<INotebook[]> =>
-    Notebook.find({ userId }).sort({ createdAt: -1 }),
+  findMany: async (userId: string) => {
+    const notebooks = await Notebook.aggregate([
+      { $match: { userId } },
+      { $sort: { createdAt: -1 } },
+      {
+        $lookup: {
+          from: "notebookwords",
+          localField: "_id",
+          foreignField: "notebookId",
+          as: "words",
+        },
+      },
+      { $addFields: { wordCount: { $size: "$words" } } },
+      { $project: { words: 0 } },
+    ]);
+    return notebooks;
+  },
   findById: async (id: string, userId: string): Promise<INotebook | null> =>
     Notebook.findOne({ _id: id, userId }),
   create: async (userId: string, data: CreateNotebookDTO): Promise<INotebook> =>
@@ -17,6 +32,9 @@ export const notebookRepository = {
     const deleted = await Notebook.findOneAndDelete({ _id: id, userId });
     await NotebookWord.deleteMany({ notebookId: id });
     return deleted;
+  },
+  touch: async (notebookId: string): Promise<void> => {
+    await Notebook.updateOne({ _id: notebookId }, { $set: { updatedAt: new Date() } });
   },
 
   // ── NotebookWords ──

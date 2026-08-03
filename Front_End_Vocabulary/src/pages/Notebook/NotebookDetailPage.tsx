@@ -90,12 +90,24 @@ export default function NotebookDetailPage() {
             {selectedNotebook?.description || "Your personal vocabulary collection"}
           </p>
         </div>
-        <button
-          onClick={() => setIsAddWordModalOpen(true)}
-          className="mt-4 sm:mt-0 btn-primary px-4 py-2 text-sm"
-        >
-          + Add Word
-        </button>
+        <div className="flex gap-2">
+          {notebookStats && notebookStats.due > 0 && (
+            <button
+              onClick={() => navigate(`/notebooks/${notebookId}/review`)}
+              className="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium"
+              style={{ backgroundColor: "var(--brand)", color: "white", borderRadius: "8px", cursor: "pointer" }}
+            >
+              Review Now ({notebookStats.due})
+            </button>
+          )}
+          <button
+            onClick={() => setIsAddWordModalOpen(true)}
+            className="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium"
+            style={{ backgroundColor: "var(--brand-softer)", color: "var(--brand)", borderRadius: "8px", cursor: "pointer" }}
+          >
+            + Add Word
+          </button>
+        </div>
       </div>
 
       {/* Stats Cards */}

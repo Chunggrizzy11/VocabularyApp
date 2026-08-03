@@ -2,10 +2,9 @@ import type { INotebookWord } from "../../types/notebook";
 
 interface NotebookWordCardProps {
   word: INotebookWord;
-  onReview?: () => void;
 }
 
-export default function NotebookWordCard({ word, onReview }: NotebookWordCardProps) {
+export default function NotebookWordCard({ word }: NotebookWordCardProps) {
   const getLevelColor = (level: number) => {
     if (level >= 4) return "var(--brand-strong)";
     if (level >= 1) return "var(--brand)";
@@ -49,13 +48,6 @@ export default function NotebookWordCard({ word, onReview }: NotebookWordCardPro
         <span className="text-[10px]" style={{ color: "var(--text-body-subtle)" }}>
           Next: {word.nextReviewAt ? new Date(word.nextReviewAt).toLocaleDateString() : "New"}
         </span>
-        <button
-          onClick={onReview}
-          className="text-xs font-bold hover:underline"
-          style={{ color: "var(--brand)" }}
-        >
-          Review Now
-        </button>
       </div>
     </div>
   );

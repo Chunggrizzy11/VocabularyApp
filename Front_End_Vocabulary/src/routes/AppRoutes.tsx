@@ -21,6 +21,7 @@ import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
 import NotebooksPage from "../pages/Notebook/NotebooksPage";
 import NotebookDetailPage from "../pages/Notebook/NotebookDetailPage";
+import NotebookReviewPage from "../pages/Notebook/NotebookReviewPage";
 
 import AdminDashboardPage from "../pages/Admin/DashboardPage";
 import AdminTopicsPage from "../pages/Admin/TopicsPage";
@@ -67,6 +68,7 @@ export default function AppRoutes() {
           <Route path="/speaking" element={<SpeakingPracticePage />} />
           <Route path="/notebooks" element={<NotebooksPage />} />
           <Route path="/notebooks/:notebookId" element={<NotebookDetailPage />} />
+          <Route path="/notebooks/:notebookId/review" element={<NotebookReviewPage />} />
         </Route>
       )}
 
