@@ -4,24 +4,80 @@ import TopicSelector from "../../components/common/TopicSelector";
 import { useVocabulary } from "../../hooks/useVocabulary";
 import Loading from "../../components/common/Loading";
 import EmptyState from "../../components/common/EmptyState";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Icon from "../../components/common/Icon";
 import MobileVolumeButton from "../../components/common/MobileVolumeButton";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
+import { useStudyTimer } from "../../hooks/useStudyTimer";
+import AddWordToNotebookModal from "../../components/notebook/AddWordToNotebookModal";
+import { useNotebookStore } from "../../store/notebook.store";
+
+const STORAGE_KEY = "flashcard_session";
+
+function loadSession(): { topicId: string; index: number } {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* ignore */ }
+  return { topicId: "", index: 0 };
+}
+
+function saveSession(topicId: string, index: number) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ topicId, index }));
+  } catch { /* ignore */ }
+}
+
+function clearSession() {
+  try {
+    sessionStorage.removeItem(STORAGE_KEY);
+  } catch { /* ignore */ }
+}
 
 export default function FlashcardPage() {
-  const [topicId, setTopicId] = useState("");
+  const initial = loadSession();
+  const [topicId, setTopicId] = useState(initial.topicId);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const { addWordToNotebook, fetchNotebooks } = useNotebookStore();
+  useStudyTimer("flashcard", topicId || undefined);
   const { words, isLoading } = useVocabulary(topicId || undefined);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() => {
+    // Validate index against words length when words load later
+    return initial.index;
+  });
   const [flipKey, setFlipKey] = useState(0);
+  const isFirstRender = useRef(true);
 
   const containerRef = useAnimatedEntrance([isLoading, index, topicId]);
 
-  // Reset index when topic changes
+  // Load notebooks once when page mounts
   useEffect(() => {
+    fetchNotebooks();
+  }, [fetchNotebooks]);
+
+  // Sync index to sessionStorage on every change
+  useEffect(() => {
+    saveSession(topicId, index);
+  }, [topicId, index]);
+
+  // Reset when topic changes or words list shrinks
+  useEffect(() => {
+    if (words.length > 0 && index >= words.length) {
+      setIndex(Math.max(0, words.length - 1));
+    }
+  }, [words.length, index]);
+
+  useEffect(() => {
+    // Skip the very first mount — sessionStorage already restored the value
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    // Clear session when changing topic
     setIndex(0);
     setFlipKey((k) => k + 1);
-  }, [topicId, words.length]);
+    clearSession();
+  }, [topicId]);
 
   if (isLoading) return <><MobileVolumeButton /><Loading label="Loading flashcards..." /></>;
 
@@ -53,7 +109,18 @@ export default function FlashcardPage() {
       <div ref={containerRef} className="max-w-2xl mx-auto px-3 sm:px-4">
         <div className="flex items-center justify-between mb-4 md:mb-6">
           <h1 className="text-[24px] sm:text-[28px] md:text-[36px] font-extrabold" style={{ color: "var(--text-heading)" }}>Flashcard</h1>
-          <span className="badge">{index + 1} / {words.length}</span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsSaveModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              style={{ backgroundColor: "var(--brand-softer)", color: "var(--brand)" }}
+              title="Lưu từ này vào Notebook"
+            >
+              <Icon name="star" size={16} color="var(--brand)" />
+              <span className="hidden sm:inline">Save to Notebook</span>
+            </button>
+            <span className="badge">{index + 1} / {words.length}</span>
+          </div>
         </div>
 
         {/* Topic Selector */}
@@ -84,6 +151,24 @@ export default function FlashcardPage() {
           </button>
         </div>
       </div>
+
+      {/* Save to Notebook Modal */}
+      <AddWordToNotebookModal
+        isOpen={isSaveModalOpen}
+        onClose={() => setIsSaveModalOpen(false)}
+        defaultWord={{
+            word: word.word,
+            meaning: word.meaning,
+            phonetic: word.phonetic,
+            partOfSpeech: word.partOfSpeech,
+            example: word.example
+        }}
+        onAdd={async (wordData) => {
+          await addWordToNotebook(wordData.notebookId, wordData);
+          alert(`Đã lưu "${wordData.word}" vào notebook thành công!`);
+          setIsSaveModalOpen(false);
+        }}
+      />
     </>
   );
 }

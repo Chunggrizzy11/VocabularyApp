@@ -11,6 +11,9 @@ import statisticsRoutes from "./routes/statistics.routes";
 import generationRoutes from "./routes/generation.routes";
 import seedRoutes from "./routes/seed.routes";
 import practiceSessionRoutes from "./routes/practiceSession.routes";
+import studySessionRoutes from "./routes/studySession.routes";
+import quizResultRoutes from "./routes/quizResult.routes";
+import notebookRoutes from "./routes/notebook.routes";
 
 import { errorHandler } from "./middlewares/errorHandler";
 import { notFound } from "./middlewares/notFound";
@@ -35,6 +38,9 @@ app.use("/api/statistics", statisticsRoutes);
 app.use("/api/generation", generationRoutes);
 app.use("/api/seed", seedRoutes);
 app.use("/api/practice-sessions", practiceSessionRoutes);
+app.use("/api/study-sessions", studySessionRoutes);
+app.use("/api/quiz-results", quizResultRoutes);
+app.use("/api/notebooks", notebookRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -32,16 +32,24 @@ export default function EmptyState({ title, description, icon = "inbox", action 
       {action && (
         <button
           onClick={action.onClick}
-          className="mt-6 font-bold text-sm uppercase tracking-wide"
+          className="mt-6 px-8 py-4 rounded-lg font-bold text-sm transition-all"
           style={{
-            padding: "14px 20px",
-            height: "48px",
             backgroundColor: "var(--brand)",
-            color: "#FFFFFF",
-            borderRadius: "var(--radius-default)",
-            boxShadow: "0 4px 0 var(--brand-strong)",
+            color: "white", // Đảm bảo text màu trắng
             border: "none",
             cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px 32px",
+            fontSize: "16px",
+            fontWeight: "700",
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+            transition: "all 0.3s ease",
+            width: "auto",
+            minWidth: "200px",
+            maxWidth: "280px",
           }}
         >
           {action.label}

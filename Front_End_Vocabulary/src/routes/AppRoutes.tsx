@@ -19,6 +19,9 @@ import LoginPage from "../pages/Auth/LoginPage";
 import RegisterPage from "../pages/Auth/RegisterPage";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
+import NotebooksPage from "../pages/Notebook/NotebooksPage";
+import NotebookDetailPage from "../pages/Notebook/NotebookDetailPage";
+
 import AdminDashboardPage from "../pages/Admin/DashboardPage";
 import AdminTopicsPage from "../pages/Admin/TopicsPage";
 import AdminVocabularyPage from "../pages/Admin/VocabularyPage";
@@ -62,6 +65,8 @@ export default function AppRoutes() {
           <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/generate" element={<WordGeneratorPage />} />
           <Route path="/speaking" element={<SpeakingPracticePage />} />
+          <Route path="/notebooks" element={<NotebooksPage />} />
+          <Route path="/notebooks/:notebookId" element={<NotebookDetailPage />} />
         </Route>
       )}
 

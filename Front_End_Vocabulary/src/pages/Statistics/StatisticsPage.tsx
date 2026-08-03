@@ -3,43 +3,19 @@ import { useVocabulary } from "../../hooks/useVocabulary";
 import { useTopics } from "../../hooks/useTopics";
 import Loading from "../../components/common/Loading";
 import Icon from "../../components/common/Icon";
-import { useMemo } from "react";
 
-/** Generate heatmap data from vocabulary nextReviewAt dates */
-function computeHeatmap(words: { nextReviewAt: string | null; createdAt: string }[]) {
-  // Count reviews per date from nextReviewAt
-  const countMap: Record<string, number> = {};
-
-  for (const w of words) {
-    // Count reviews due (nextReviewAt)
-    if (w.nextReviewAt) {
-      const dateStr = new Date(w.nextReviewAt).toISOString().slice(0, 10);
-      countMap[dateStr] = (countMap[dateStr] || 0) + 1;
-    }
-    // Also count word creation as activity
-    const createdStr = new Date(w.createdAt).toISOString().slice(0, 10);
-    countMap[createdStr] = (countMap[createdStr] || 0) + 1;
-  }
-
-  // Build last 84 days (12 weeks)
-  const today = new Date();
-  const days: { date: string; count: number; level: number }[] = [];
-
-  for (let i = 83; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
-    const count = countMap[dateStr] || 0;
-    // Level: 0=none, 1=light, 2=medium, 3=heavy, 4=intense
-    const level = count === 0 ? 0 : Math.min(Math.floor(count / 3) + 1, 4);
-    days.push({ date: dateStr, count, level });
-  }
-
-  return days;
+function formatStudyTime(ms: number): string {
+  if (!ms || ms <= 0) return "0m";
+  const totalMinutes = Math.floor(ms / 60000);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (hours === 0) return `${minutes}m`;
+  if (minutes === 0) return `${hours}h`;
+  return `${hours}h ${minutes}m`;
 }
 
 export default function StatisticsPage() {
-  const { userStats, isLoading: statsLoading, error } = useStatistics();
+  const { userStats, heatmapData, isLoading: statsLoading, error } = useStatistics();
   const { words, isLoading: vocabLoading } = useVocabulary();
   const { topics, isLoading: topicsLoading } = useTopics();
 
@@ -51,12 +27,6 @@ export default function StatisticsPage() {
     (w) => w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()
   ).length;
   const wordsMastered = words.filter((w) => w.srsLevel >= 4).length;
-
-  // Generate heatmap from vocabulary data
-  const heatmapData = useMemo(() => {
-    if (words.length === 0) return [];
-    return computeHeatmap(words);
-  }, [words]);
 
   const isLoading = statsLoading || vocabLoading || topicsLoading;
 
@@ -122,7 +92,7 @@ export default function StatisticsPage() {
           {[
             { label: "Words Overdue", value: wordsOverdue, icon: "alert" as const },
             { label: "Review Sessions", value: userStats?.totalReviewSessions ?? 0, icon: "refresh" as const },
-            { label: "Quiz Sessions", value: userStats?.totalQuizSessions ?? 0, icon: "target" as const },
+            { label: "Study Time", value: formatStudyTime(userStats?.totalTimeSpentMs ?? 0), icon: "clock" as const },
             { label: "Current Streak", value: `${userStats?.currentStreak ?? 0} days`, icon: "fire" as const },
           ].map((stat) => (
             <div key={stat.label} className="card p-4 sm:p-5">

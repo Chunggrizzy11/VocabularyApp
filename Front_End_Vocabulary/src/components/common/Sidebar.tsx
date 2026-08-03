@@ -8,6 +8,7 @@ import logo from "../../assets/images/Logo.png";
 const LINKS: { to: string; label: string; icon: IconName }[] = [
   { to: "/", label: "Home", icon: "home" },
   { to: "/topics", label: "Topics", icon: "folder" },
+  { to: "/notebooks", label: "Notebooks", icon: "book" },
   { to: "/generate", label: "Generate", icon: "sparkle" },
   { to: "/flashcard", label: "Flashcard", icon: "flashcard" },
   { to: "/review", label: "Review", icon: "book-open" },

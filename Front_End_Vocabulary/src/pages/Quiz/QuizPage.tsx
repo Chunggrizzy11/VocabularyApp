@@ -6,16 +6,20 @@ import Loading from "../../components/common/Loading";
 import TopicSelector from "../../components/common/TopicSelector";
 import { generateQuiz } from "../../utils/quizGenerator";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
+import { useStudyTimer } from "../../hooks/useStudyTimer";
 import { useUISound } from "../../hooks/useUISound";
+import { quizResultService } from "../../services/quizResult.service";
 
 export default function QuizPage() {
   const [topicId, setTopicId] = useState("");
+  useStudyTimer("quiz", topicId || undefined);
   const { words, isLoading } = useVocabulary(topicId || undefined);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
+  const [saved, setSaved] = useState(false);
   const { playCorrect, playWrong } = useUISound();
 
   const quizzes = useMemo(() => generateQuiz(words), [words]);
@@ -28,6 +32,7 @@ export default function QuizPage() {
     setSelected(null);
     setShowResult(false);
     setFeedback(null);
+    setSaved(false);
   }, [topicId, quizzes.length]);
 
   // Reset feedback when question changes
@@ -35,6 +40,18 @@ export default function QuizPage() {
     setSelected(null);
     setFeedback(null);
   }, [currentIndex]);
+
+  // Save quiz result when complete
+  useEffect(() => {
+    if (showResult && !saved) {
+      quizResultService.save({
+        score,
+        totalQuestions: quizzes.length,
+        topicId: topicId || undefined,
+      }).catch(() => {});
+      setSaved(true);
+    }
+  }, [showResult, saved, score, quizzes.length, topicId]);
 
   if (isLoading) return <Loading label="Preparing quiz..." />;
 

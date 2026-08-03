@@ -6,11 +6,13 @@ import { useVocabulary } from "../../hooks/useVocabulary";
 import Loading from "../../components/common/Loading";
 import EmptyState from "../../components/common/EmptyState";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
+import { useStudyTimer } from "../../hooks/useStudyTimer";
 import { useState, useMemo, useEffect } from "react";
 import type { SRSRating } from "../../types/Review";
 
 export default function ReviewPage() {
   const [topicId, setTopicId] = useState("");
+  useStudyTimer("review");
   const { words, isLoading: vocabLoading } = useVocabulary(topicId || undefined);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSessionComplete, setIsSessionComplete] = useState(false);

@@ -10,6 +10,7 @@ import PronunciationButton from "../../components/common/PronunciationButton";
 import { usePronunciation } from "../../hooks/usePronunciation";
 import { speakingService } from "../../services/speaking.service";
 import { useAnimatedEntrance } from "../../hooks/useAnimatedEntrance";
+import { useStudyTimer } from "../../hooks/useStudyTimer";
 import { getScoreLabel } from "../../utils/pronunciationScore";
 
 export default function SpeakingPracticePage() {
@@ -34,6 +35,7 @@ export default function SpeakingPracticePage() {
   const { topics } = useTopics();
   const containerRef = useAnimatedEntrance([isLoading, words.length, currentWordIndex]);
   const [selectedTopicId, setSelectedTopicId] = useState("");
+  useStudyTimer("speaking", selectedTopicId || undefined);
   const [showingScore, setShowingScore] = useState(false);
   const [currentTranscript, setCurrentTranscript] = useState("");
 
