@@ -23,6 +23,7 @@ export default function NotebookDetailPage() {
     fetchNotebookStats,
     addWordToNotebook,
     resetNotebookWords,
+    setWordSearch,
   } = useNotebookStore();
 
   const [isAddWordModalOpen, setIsAddWordModalOpen] = useState(false);
@@ -139,11 +140,11 @@ export default function NotebookDetailPage() {
       {/* Search Bar */}
       <div className="mb-6">
         <div className="relative">
-          <Input
+          <input
             type="text"
             placeholder="Search words or meanings..."
             value={wordSearch}
-            onChange={(e) => setWordSearch(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWordSearch(e.target.value)}
             className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand/20"
             style={{ borderColor: "var(--border-default)" }}
           />

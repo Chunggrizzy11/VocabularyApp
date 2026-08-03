@@ -77,7 +77,7 @@ export const useNotebookStore = create<NotebookState>((set, get) => ({
   setNotebookWords: (words) => set({ notebookWords: words }),
   setNotebookWordsLoading: (loading) => set({ notebookWordsLoading: loading }),
   setNotebookWordsError: (error) => set({ notebookWordsError: error }),
-  setWordSearch: (search) => set({ wordSearch: search }),
+  setWordSearch: (search: string) => set({ wordSearch: search }),
   setNotebookStats: (stats) => set({ notebookStats: stats }),
   setStatsLoading: (loading) => set({ statsLoading: loading }),
   setStatsError: (error) => set({ statsError: error }),
