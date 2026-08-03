@@ -5,7 +5,7 @@ interface NotebookStatsCardProps {
   color: string;
 }
 
-export default function NotebookStatsCard({ title, value, icon, color }: NotebookStatsCardProps) {
+export default function NotebookStatsCard({ title, value, color }: NotebookStatsCardProps) {
   return (
     <div className="card p-4 flex items-center gap-3">
       <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: color + "20" }}>

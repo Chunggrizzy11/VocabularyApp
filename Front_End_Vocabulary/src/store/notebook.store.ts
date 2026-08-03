@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { notebookService } from "../services/notebook.service";
-import type { INotebook, INotebookWord } from "../../types/notebook";
+import type { INotebook, INotebookWord } from "../types/notebook";
 
 interface NotebookState {
   notebooks: INotebook[];

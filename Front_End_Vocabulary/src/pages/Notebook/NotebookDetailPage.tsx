@@ -21,10 +21,8 @@ export default function NotebookDetailPage() {
     statsLoading,
     fetchNotebookWords,
     fetchNotebookStats,
-    setSelectedNotebook,
-    setIsAddingWord,
+    addWordToNotebook,
     resetNotebookWords,
-    resetNotebookState,
   } = useNotebookStore();
 
   const [isAddWordModalOpen, setIsAddWordModalOpen] = useState(false);
@@ -141,11 +139,11 @@ export default function NotebookDetailPage() {
       {/* Search Bar */}
       <div className="mb-6">
         <div className="relative">
-          <input
+          <Input
             type="text"
             placeholder="Search words or meanings..."
             value={wordSearch}
-            onChange={(e) => {}}
+            onChange={(e) => setWordSearch(e.target.value)}
             className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand/20"
             style={{ borderColor: "var(--border-default)" }}
           />
@@ -183,10 +181,9 @@ export default function NotebookDetailPage() {
       <AddWordToNotebookModal
         isOpen={isAddWordModalOpen}
         onClose={() => setIsAddWordModalOpen(false)}
-        onAdd={(wordData) => {
-          // This will be handled by the store
-          setIsAddingWord(true);
-          // Implementation in store will be handled
+        onAdd={async (wordData) => {
+          if (!notebookId) return;
+          await addWordToNotebook(notebookId, wordData);
           setIsAddWordModalOpen(false);
         }}
       />
